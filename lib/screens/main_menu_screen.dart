@@ -7,6 +7,7 @@ import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
 import 'game_screen.dart';
 import 'shop_screen.dart';
+import 'onboarding_screen.dart';
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
@@ -79,37 +80,78 @@ class _MainMenuScreenState extends State<MainMenuScreen> with SingleTickerProvid
                           "v1.0.0 // ACTIVE",
                           style: CyberTheme.terminalMuted,
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            HapticFeedback.selectionClick();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ShopScreen()),
-                            ).then((_) => _loadProgress());
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: CyberTheme.cardBackground,
-                              border: Border.all(color: CyberTheme.successGreen, width: 1.5),
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: CyberTheme.neonGlow(CyberTheme.successGreen, blurRadius: 4),
-                            ),
-                            child: Row(
-                              children: [
-                                const Icon(Icons.analytics, color: CyberTheme.successGreen, size: 16),
-                                const SizedBox(width: 6),
-                                Text(
-                                  "$_credits DATA",
-                                  style: const TextStyle(
-                                    color: CyberTheme.successGreen,
-                                    fontFamily: 'Courier',
-                                    fontWeight: FontWeight.bold,
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                HapticFeedback.selectionClick();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const OnboardingScreen(isReplay: true),
                                   ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: CyberTheme.cardBackground,
+                                  border: Border.all(color: CyberTheme.primaryCyan, width: 1.5),
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4),
                                 ),
-                              ],
+                                child: const Row(
+                                  children: [
+                                    Icon(Icons.help_outline, color: CyberTheme.primaryCyan, size: 14),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      "INFO",
+                                      style: TextStyle(
+                                        color: CyberTheme.primaryCyan,
+                                        fontFamily: 'Courier',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 8),
+                            GestureDetector(
+                              onTap: () {
+                                HapticFeedback.selectionClick();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ShopScreen()),
+                                ).then((_) => _loadProgress());
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                                decoration: BoxDecoration(
+                                  color: CyberTheme.cardBackground,
+                                  border: Border.all(color: CyberTheme.successGreen, width: 1.5),
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: CyberTheme.neonGlow(CyberTheme.successGreen, blurRadius: 4),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(Icons.analytics, color: CyberTheme.successGreen, size: 14),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      "$_credits DATA",
+                                      style: const TextStyle(
+                                        color: CyberTheme.successGreen,
+                                        fontFamily: 'Courier',
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),

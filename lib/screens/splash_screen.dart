@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import '../theme/cyber_theme.dart';
 import '../widgets/particle_emitter.dart';
 import 'main_menu_screen.dart';
+import 'onboarding_screen.dart';
+import '../utils/game_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -82,9 +84,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   }
 
   void _navigateToMainMenu() {
+    final completed = GameStorage.getOnboardingCompleted();
     Navigator.of(context).pushReplacement(
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) => const MainMenuScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            completed ? const MainMenuScreen() : const OnboardingScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(
             opacity: animation,

@@ -6,9 +6,18 @@ class GameStorage {
   static const String _keyCredits = 'cyberhex_credits';
   static const String _keyUnlockedLevel = 'cyberhex_unlocked_level';
   static const String _keyUpgradePrefix = 'cyberhex_upgrade_';
+  static const String _keyOnboardingCompleted = 'cyberhex_onboarding_completed';
 
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  static bool getOnboardingCompleted() {
+    return _prefs?.getBool(_keyOnboardingCompleted) ?? false;
+  }
+
+  static Future<void> setOnboardingCompleted(bool value) async {
+    await _prefs?.setBool(_keyOnboardingCompleted, value);
   }
 
   static int getCredits() {
