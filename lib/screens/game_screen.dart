@@ -406,6 +406,7 @@ class _GameScreenState extends State<GameScreen> {
                                       nodes: _nodes,
                                       playerCoords: _playerCoords,
                                       droneCoords: _droneCoords,
+                                      dronePatrolPath: widget.level.dronePatrolPath,
                                       hexSize: radius,
                                       gridOffset: centerOffset,
                                     ),

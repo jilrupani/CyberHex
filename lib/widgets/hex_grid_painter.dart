@@ -7,6 +7,7 @@ class HexGridPainter extends CustomPainter {
   final List<NodeModel> nodes;
   final HexCoords playerCoords;
   final HexCoords? droneCoords;
+  final List<HexCoords> dronePatrolPath;
   final double hexSize;
   final Offset gridOffset;
   final HexCoords? selectedCoords;
@@ -15,6 +16,7 @@ class HexGridPainter extends CustomPainter {
     required this.nodes,
     required this.playerCoords,
     required this.droneCoords,
+    this.dronePatrolPath = const [],
     required this.hexSize,
     required this.gridOffset,
     this.selectedCoords,
@@ -25,6 +27,26 @@ class HexGridPainter extends CustomPainter {
     final x = hexSize * (sqrt(3) * coords.q + sqrt(3) / 2 * coords.r) + gridOffset.dx;
     final y = hexSize * (3.0 / 2.0 * coords.r) + gridOffset.dy;
     return Offset(x, y);
+  }
+
+  void _drawDashedLine(Canvas canvas, Offset p1, Offset p2, Paint paint) {
+    const double dashWidth = 6.0;
+    const double dashSpace = 4.0;
+    final double distance = (p2 - p1).distance;
+    if (distance == 0) return;
+    final double dx = (p2.dx - p1.dx) / distance;
+    final double dy = (p2.dy - p1.dy) / distance;
+    double currentDist = 0.0;
+    while (currentDist < distance) {
+      final double endX = p1.dx + dx * min(currentDist + dashWidth, distance);
+      final double endY = p1.dy + dy * min(currentDist + dashWidth, distance);
+      canvas.drawLine(
+        Offset(p1.dx + dx * currentDist, p1.dy + dy * currentDist),
+        Offset(endX, endY),
+        paint,
+      );
+      currentDist += dashWidth + dashSpace;
+    }
   }
 
   // Draw a hexagon path at a given center
@@ -213,6 +235,32 @@ class HexGridPainter extends CustomPainter {
       }
     }
 
+    // 3.5. Draw drone patrol path lines and markers
+    if (dronePatrolPath.isNotEmpty && dronePatrolPath.length > 1) {
+      final pathPaint = Paint()
+        ..color = CyberTheme.accentAmber.withOpacity(0.25)
+        ..strokeWidth = 2.0
+        ..style = PaintingStyle.stroke;
+
+      final pathMarkerPaint = Paint()
+        ..color = CyberTheme.accentAmber.withOpacity(0.12)
+        ..style = PaintingStyle.fill;
+
+      // Draw dashed loop lines connecting the patrol nodes
+      for (int i = 0; i < dronePatrolPath.length; i++) {
+        final p1 = hexToPixel(dronePatrolPath[i]);
+        final p2 = hexToPixel(dronePatrolPath[(i + 1) % dronePatrolPath.length]);
+        _drawDashedLine(canvas, p1, p2, pathPaint);
+      }
+
+      // Draw node center markers to visualize path steps
+      for (var coord in dronePatrolPath) {
+        if (coord != droneCoords) {
+          canvas.drawCircle(hexToPixel(coord), hexSize * 0.12, pathMarkerPaint);
+        }
+      }
+    }
+
     // 4. Draw security drone if it exists
     if (droneCoords != null) {
       final dCenter = hexToPixel(droneCoords!);
@@ -273,6 +321,7 @@ class HexGridPainter extends CustomPainter {
     return oldDelegate.nodes != nodes ||
         oldDelegate.playerCoords != playerCoords ||
         oldDelegate.droneCoords != droneCoords ||
+        oldDelegate.dronePatrolPath != dronePatrolPath ||
         oldDelegate.hexSize != hexSize ||
         oldDelegate.gridOffset != gridOffset ||
         oldDelegate.selectedCoords != selectedCoords;

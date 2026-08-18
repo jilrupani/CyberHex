@@ -154,7 +154,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                         _buildSlide(
                           title: "AVOID THREATS",
                           subtitle: "SECURITY DETECTION & ESCAPE",
-                          description: "Beware! Stepping on Firewall nodes triggers immediate alarms (+25% threat speed). Watch out for security Drones patrolling the paths. Seek and enter the green Extraction Gate to escape and secure your loot.",
+                          description: "Beware! Stepping on Firewall nodes triggers immediate alarms (+25% threat speed). Watch out for security Drones patrolling the paths (marked with dotted amber lines). Seek and enter the green Extraction Gate to escape and secure your loot.",
                           child: _buildThreatsGraphic(),
                         ),
                         _buildSlide(
