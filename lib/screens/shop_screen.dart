@@ -1,0 +1,288 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import '../models/game_models.dart';
+import '../theme/cyber_theme.dart';
+import '../utils/game_storage.dart';
+
+class ShopScreen extends StatefulWidget {
+  const ShopScreen({super.key});
+
+  @override
+  State<ShopScreen> createState() => _ShopScreenState();
+}
+
+class _ShopScreenState extends State<ShopScreen> {
+  int _credits = 0;
+  List<UpgradeItem> _upgrades = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadShopData();
+  }
+
+  void _loadShopData() {
+    setState(() {
+      _credits = GameStorage.getCredits();
+      _upgrades = [
+        UpgradeItem(
+          id: 'ram',
+          name: 'RAM EXPANSION',
+          description: 'Increases starting action capacity by +2 RAM per level.',
+          baseCost: 100,
+          level: GameStorage.getUpgradeLevel('ram'),
+        ),
+        UpgradeItem(
+          id: 'jammer',
+          name: 'FIREWALL JAMMER',
+          description: 'Reduces threat level growth per move by 15%.',
+          baseCost: 120,
+          level: GameStorage.getUpgradeLevel('jammer'),
+        ),
+        UpgradeItem(
+          id: 'scanner',
+          name: 'NODE RADAR SCANNER',
+          description: 'Increases data detection ranges to locate far-off network packet nodes.',
+          baseCost: 150,
+          level: GameStorage.getUpgradeLevel('scanner'),
+        ),
+        UpgradeItem(
+          id: 'decoy',
+          name: 'SIGNAL DECOY',
+          description: 'Deploy decoys. Drones start level in standby mode for 3 moves.',
+          baseCost: 200,
+          level: GameStorage.getUpgradeLevel('decoy'),
+        ),
+      ];
+    });
+  }
+
+  void _purchaseUpgrade(UpgradeItem item) async {
+    final cost = item.currentCost;
+    if (_credits >= cost && item.level < item.maxLevel) {
+      HapticFeedback.heavyImpact();
+      await GameStorage.addCredits(-cost);
+      await GameStorage.setUpgradeLevel(item.id, item.level + 1);
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            'UPGRADE INSTALLED: ${item.name} LVL ${item.level + 1}',
+            style: const TextStyle(fontFamily: 'Courier', color: CyberTheme.successGreen),
+          ),
+          backgroundColor: CyberTheme.cardBackground,
+        ),
+      );
+      _loadShopData();
+    } else if (item.level >= item.maxLevel) {
+      HapticFeedback.vibrate();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'SYSTEM UPGRADE AT MAXIMUM EFFICIENCY.',
+            style: TextStyle(fontFamily: 'Courier', color: CyberTheme.accentAmber),
+          ),
+          backgroundColor: CyberTheme.cardBackground,
+        ),
+      );
+    } else {
+      HapticFeedback.vibrate();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'INSUFFICIENT SYSTEM CREDITS. NEED MORE DATA.',
+            style: TextStyle(fontFamily: 'Courier', color: CyberTheme.errorRed),
+          ),
+          backgroundColor: CyberTheme.cardBackground,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: CyberTheme.bgGradient,
+        ),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Shop Header
+              Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: CyberTheme.primaryCyan),
+                      onPressed: () {
+                        HapticFeedback.selectionClick();
+                        Navigator.pop(context);
+                      },
+                    ),
+                    const Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "SYSTEM UPGRADES",
+                            style: CyberTheme.terminalTitle,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: CyberTheme.cardBackground,
+                        border: Border.all(color: CyberTheme.successGreen),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        "$_credits DATA",
+                        style: const TextStyle(
+                          color: CyberTheme.successGreen,
+                          fontFamily: 'Courier',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Upgrades List
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  itemCount: _upgrades.length,
+                  itemBuilder: (context, index) {
+                    final item = _upgrades[index];
+                    final isMax = item.level >= item.maxLevel;
+                    final cost = item.currentCost;
+                    final canBuy = _credits >= cost && !isMax;
+
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 20),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: CyberTheme.cardBackground,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: canBuy ? CyberTheme.primaryCyan : Colors.grey.shade800,
+                          width: 1.5,
+                        ),
+                        boxShadow: canBuy ? CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4) : null,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      item.name,
+                                      style: const TextStyle(
+                                        fontFamily: 'Courier',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Text(
+                                "LVL ${item.level} / ${item.maxLevel}",
+                                style: TextStyle(
+                                  fontFamily: 'Courier',
+                                  color: isMax ? CyberTheme.accentAmber : CyberTheme.primaryCyan,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            item.description,
+                            style: CyberTheme.terminalMuted,
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              // Level progress ticks
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: Row(
+                                    children: List.generate(item.maxLevel, (tickIdx) {
+                                      final isActive = tickIdx < item.level;
+                                      return Container(
+                                        margin: const EdgeInsets.only(right: 6),
+                                        width: 16,
+                                        height: 8,
+                                        decoration: BoxDecoration(
+                                          color: isActive
+                                              ? CyberTheme.primaryCyan
+                                              : Colors.grey.shade900,
+                                          border: Border.all(
+                                            color: isActive ? CyberTheme.primaryCyan : Colors.grey.shade800,
+                                          ),
+                                          borderRadius: BorderRadius.circular(2),
+                                        ),
+                                      );
+                                    }),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              
+                              // Purchase Button
+                              ElevatedButton(
+                                onPressed: isMax ? null : () => _purchaseUpgrade(item),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: canBuy ? CyberTheme.primaryCyan : const Color(0xFF0F0F12),
+                                  disabledBackgroundColor: Colors.grey.shade900,
+                                  side: BorderSide(
+                                    color: canBuy ? CyberTheme.primaryCyan : Colors.grey.shade800,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  isMax ? "MAXED" : "$cost DATA",
+                                  style: TextStyle(
+                                    fontFamily: 'Courier',
+                                    color: canBuy ? Colors.black : Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
