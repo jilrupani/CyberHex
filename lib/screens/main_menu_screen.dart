@@ -1,7 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../models/game_models.dart';
 import '../models/levels_data.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
@@ -16,18 +14,13 @@ class MainMenuScreen extends StatefulWidget {
   State<MainMenuScreen> createState() => _MainMenuScreenState();
 }
 
-class _MainMenuScreenState extends State<MainMenuScreen> with SingleTickerProviderStateMixin {
-  late AnimationController _titleController;
+class _MainMenuScreenState extends State<MainMenuScreen> {
   int _credits = 0;
   int _unlockedLevel = 1;
 
   @override
   void initState() {
     super.initState();
-    _titleController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 4),
-    )..repeat(reverse: true);
     _loadProgress();
   }
 
@@ -38,11 +31,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> with SingleTickerProvid
     });
   }
 
-  @override
-  void dispose() {
-    _titleController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,61 +143,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> with SingleTickerProvid
                         ),
                       ],
                     ),
-                    const Spacer(flex: 1),
-                    
-                    // Main Logo
-                    AnimatedBuilder(
-                      animation: _titleController,
-                      builder: (context, child) {
-                        return Opacity(
-                          opacity: 0.8 + 0.2 * sin(_titleController.value * pi * 2),
-                          child: child,
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: CyberTheme.primaryCyan, width: 2),
-                              boxShadow: CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 10),
-                            ),
-                            child: const Icon(
-                              Icons.security,
-                              color: CyberTheme.primaryCyan,
-                              size: 48,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          const Text(
-                            "CYBERHEX",
-                            style: TextStyle(
-                              fontFamily: 'Courier',
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 6.0,
-                              shadows: [
-                                Shadow(color: CyberTheme.primaryCyan, blurRadius: 12),
-                              ],
-                            ),
-                          ),
-                          const Text(
-                            "NODE_HACKER_MAINFRAME",
-                            style: TextStyle(
-                              fontFamily: 'Courier',
-                              fontSize: 12,
-                              color: CyberTheme.secondaryMagenta,
-                              letterSpacing: 2.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    
-                    const Spacer(flex: 1),
+                    const SizedBox(height: 24),
                     
                     // Levels dashboard list
                     const Text(
