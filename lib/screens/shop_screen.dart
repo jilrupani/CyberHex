@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/game_models.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
@@ -60,7 +59,6 @@ class _ShopScreenState extends State<ShopScreen> {
   void _purchaseUpgrade(UpgradeItem item) async {
     final cost = item.currentCost;
     if (_credits >= cost && item.level < item.maxLevel) {
-      HapticFeedback.heavyImpact();
       await GameStorage.addCredits(-cost);
       await GameStorage.setUpgradeLevel(item.id, item.level + 1);
       
@@ -75,7 +73,6 @@ class _ShopScreenState extends State<ShopScreen> {
       );
       _loadShopData();
     } else if (item.level >= item.maxLevel) {
-      HapticFeedback.vibrate();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -86,7 +83,6 @@ class _ShopScreenState extends State<ShopScreen> {
         ),
       );
     } else {
-      HapticFeedback.vibrate();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
@@ -119,7 +115,6 @@ class _ShopScreenState extends State<ShopScreen> {
                     IconButton(
                       icon: const Icon(Icons.arrow_back, color: CyberTheme.primaryCyan),
                       onPressed: () {
-                        HapticFeedback.selectionClick();
                         Navigator.pop(context);
                       },
                     ),

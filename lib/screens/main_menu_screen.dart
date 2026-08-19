@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/levels_data.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
@@ -71,80 +70,69 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "v1.0.0 // Active",
-                          style: CyberTheme.terminalMuted,
-                        ),
-                        Row(
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                HapticFeedback.selectionClick();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const OnboardingScreen(isReplay: true),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OnboardingScreen(isReplay: true),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: CyberTheme.cardBackground,
+                              border: Border.all(color: CyberTheme.primaryCyan, width: 1.5),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4),
+                            ),
+                            child: const Row(
+                              children: [
+                                Icon(Icons.help_outline, color: CyberTheme.primaryCyan, size: 14),
+                                SizedBox(width: 4),
+                                Text(
+                                  "Info",
+                                  style: TextStyle(
+                                    color: CyberTheme.primaryCyan,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
                                   ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: CyberTheme.cardBackground,
-                                  border: Border.all(color: CyberTheme.primaryCyan, width: 1.5),
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4),
                                 ),
-                                child: const Row(
-                                  children: [
-                                    Icon(Icons.help_outline, color: CyberTheme.primaryCyan, size: 14),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      "Info",
-                                      style: TextStyle(
-                                        color: CyberTheme.primaryCyan,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              ],
                             ),
-                            const SizedBox(width: 8),
-                            GestureDetector(
-                              onTap: () {
-                                HapticFeedback.selectionClick();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const ShopScreen()),
-                                ).then((_) => _loadProgress());
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: CyberTheme.cardBackground,
-                                  border: Border.all(color: CyberTheme.successGreen, width: 1.5),
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: CyberTheme.neonGlow(CyberTheme.successGreen, blurRadius: 4),
-                                ),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.analytics, color: CyberTheme.successGreen, size: 14),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      "$_credits Data",
-                                      style: const TextStyle(
-                                        color: CyberTheme.successGreen,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => const ShopScreen()),
+                            ).then((_) => _loadProgress());
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: CyberTheme.cardBackground,
+                              border: Border.all(color: CyberTheme.successGreen, width: 1.5),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: CyberTheme.neonGlow(CyberTheme.successGreen, blurRadius: 4),
                             ),
-                          ],
+                            child: Row(
+                              children: [
+                                const Icon(Icons.analytics, color: CyberTheme.successGreen, size: 14),
+                                const SizedBox(width: 6),
+                                Text(
+                                  "$_credits Data",
+                                  style: const TextStyle(
+                                    color: CyberTheme.successGreen,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ],
                     ),
@@ -168,7 +156,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           return GestureDetector(
                             onTap: isUnlocked
                                 ? () {
-                                    HapticFeedback.mediumImpact();
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -177,7 +164,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                     ).then((_) => _loadProgress());
                                   }
                                 : () {
-                                    HapticFeedback.vibrate();
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
@@ -245,7 +231,6 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     // Reset Data Button (Bottom)
                     TextButton(
                       onPressed: () {
-                        HapticFeedback.heavyImpact();
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -273,7 +258,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                         );
                       },
                       child: const Text(
-                        "// Purge Database Progress",
+                        "Purge Database Progress",
                         style: TextStyle(
                           color: CyberTheme.errorRed,
                           fontSize: 12,

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../theme/cyber_theme.dart';
 import '../widgets/particle_emitter.dart';
 import 'main_menu_screen.dart';
@@ -77,7 +76,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
       if (step >= totalSteps) {
         timer.cancel();
-        HapticFeedback.mediumImpact();
         _navigateToMainMenu();
       }
     });

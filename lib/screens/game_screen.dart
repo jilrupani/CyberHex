@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../models/game_models.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
@@ -113,7 +112,6 @@ class _GameScreenState extends State<GameScreen> {
     // Verify adjacent node
     final distance = _playerCoords.distanceTo(tappedCoords);
     if (distance != 1) {
-      HapticFeedback.vibrate();
       _addLog("Error: Target link out of range.");
       return;
     }
@@ -124,7 +122,6 @@ class _GameScreenState extends State<GameScreen> {
     final targetNode = _nodes[targetNodeIdx];
 
     // Move player
-    HapticFeedback.selectionClick();
     setState(() {
       _playerCoords = tappedCoords;
       _currentRam--;
@@ -137,7 +134,6 @@ class _GameScreenState extends State<GameScreen> {
     _particleController.spawn(tapOffset, CyberTheme.primaryCyan, count: 12);
 
     if (targetNode.type == NodeType.core) {
-      HapticFeedback.heavyImpact();
       _collectedCores++;
       _collectedCredits += targetNode.coreValue;
       _addLog("Data core captured! +${targetNode.coreValue} system data.");
@@ -146,7 +142,6 @@ class _GameScreenState extends State<GameScreen> {
         targetNode.type = NodeType.empty;
       });
     } else if (targetNode.type == NodeType.firewall) {
-      HapticFeedback.vibrate();
       final dmg = 25.0;
       setState(() {
         _firewallThreat = min(100.0, _firewallThreat + dmg);
@@ -154,7 +149,6 @@ class _GameScreenState extends State<GameScreen> {
       _addLog("Warning: Firewall penetrated! Threat level +$dmg%.");
       _particleController.spawn(tapOffset, CyberTheme.errorRed, count: 25);
     } else if (targetNode.type == NodeType.port) {
-      HapticFeedback.mediumImpact();
       _winLevel(tapOffset);
       return;
     }
@@ -198,7 +192,6 @@ class _GameScreenState extends State<GameScreen> {
 
       // Check collision
       if (_droneCoords == _playerCoords) {
-        HapticFeedback.vibrate();
         _loseLevel("Security drone identified system signature.");
       }
     }
@@ -208,7 +201,6 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _isGameWon = true;
     });
-    HapticFeedback.mediumImpact();
     _particleController.spawn(offset, CyberTheme.secondaryMagenta, count: 40);
     _addLog("Extraction gate linked. Transferring data.");
     _addLog("Success! Secured $_collectedCredits data packets.");
@@ -222,7 +214,6 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _isGameOver = true;
     });
-    HapticFeedback.vibrate();
     _addLog("Alert: System disconnected. $reason");
   }
 
@@ -249,7 +240,6 @@ class _GameScreenState extends State<GameScreen> {
                         IconButton(
                           icon: const Icon(Icons.arrow_back, color: CyberTheme.primaryCyan),
                           onPressed: () {
-                            HapticFeedback.selectionClick();
                             Navigator.pop(context);
                           },
                         ),
@@ -268,7 +258,6 @@ class _GameScreenState extends State<GameScreen> {
                         IconButton(
                           icon: const Icon(Icons.refresh, color: CyberTheme.accentAmber),
                           onPressed: () {
-                            HapticFeedback.mediumImpact();
                             setState(() {
                               _initializeLevel();
                             });
@@ -530,7 +519,6 @@ class _GameScreenState extends State<GameScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  HapticFeedback.selectionClick();
                                   Navigator.pop(context);
                                 },
                                 child: const Text(
@@ -546,7 +534,6 @@ class _GameScreenState extends State<GameScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  HapticFeedback.mediumImpact();
                                   setState(() {
                                     _initializeLevel();
                                   });

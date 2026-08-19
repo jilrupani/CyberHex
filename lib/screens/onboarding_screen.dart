@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
 import 'main_menu_screen.dart';
@@ -43,7 +42,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
   }
 
   void _onNextPage() {
-    HapticFeedback.mediumImpact();
     if (_currentPage < 3) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 400),
@@ -55,7 +53,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
   }
 
   void _finishOnboarding() async {
-    HapticFeedback.heavyImpact();
     if (!widget.isReplay) {
       await GameStorage.setOnboardingCompleted(true);
     }
@@ -104,17 +101,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          "Mission Brief // 0${_currentPage + 1}",
-                          style: CyberTheme.terminalMuted.copyWith(fontWeight: FontWeight.bold),
-                        ),
                         if (_currentPage < 3)
                           TextButton(
                             onPressed: _finishOnboarding,
                             child: const Text(
-                              "// Skip",
+                              "Skip",
                               style: TextStyle(
                                 color: CyberTheme.secondaryMagenta,
                                 fontWeight: FontWeight.bold,
@@ -135,7 +128,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                         setState(() {
                           _currentPage = page;
                         });
-                        HapticFeedback.selectionClick();
                       },
                       children: [
                         _buildSlide(
