@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CyberTheme {
   // Brand Colors
@@ -50,13 +51,12 @@ class CyberTheme {
   }
 
   // Text Styles
-  static const TextStyle terminalTitle = TextStyle(
-    fontFamily: 'Courier',
-    fontSize: 24,
+  static TextStyle get terminalTitle => GoogleFonts.poppins(
+    fontSize: 22,
     fontWeight: FontWeight.bold,
     color: primaryCyan,
-    letterSpacing: 2.0,
-    shadows: [
+    letterSpacing: 1.5,
+    shadows: const [
       Shadow(
         color: primaryCyan,
         blurRadius: 10,
@@ -64,25 +64,22 @@ class CyberTheme {
     ],
   );
 
-  static const TextStyle terminalBody = TextStyle(
-    fontFamily: 'Courier',
-    fontSize: 14,
-    color: Color(0xFFD0D7F2),
-    letterSpacing: 1.0,
+  static TextStyle get terminalBody => GoogleFonts.poppins(
+    fontSize: 13,
+    color: const Color(0xFFD0D7F2),
+    letterSpacing: 0.5,
   );
 
-  static const TextStyle terminalAccent = TextStyle(
-    fontFamily: 'Courier',
-    fontSize: 14,
+  static TextStyle get terminalAccent => GoogleFonts.poppins(
+    fontSize: 13,
     color: secondaryMagenta,
     fontWeight: FontWeight.bold,
-    letterSpacing: 1.0,
+    letterSpacing: 0.5,
   );
 
-  static const TextStyle terminalMuted = TextStyle(
-    fontFamily: 'Courier',
-    fontSize: 12,
-    color: Color(0xFF6B728E),
-    letterSpacing: 0.5,
+  static TextStyle get terminalMuted => GoogleFonts.poppins(
+    fontSize: 11,
+    color: const Color(0xFF6B728E),
+    letterSpacing: 0.3,
   );
 }

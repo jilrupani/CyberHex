@@ -38,6 +38,13 @@ class _GameScreenState extends State<GameScreen> {
   double _jammerMultiplier = 1.0;
   int _decoyMovesLeft = 0;
 
+  String _formatCodeName(String name) {
+    return name.split('_').map((word) {
+      if (word.isEmpty) return '';
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+  }
+
   @override
   void initState() {
     super.initState();
@@ -75,12 +82,12 @@ class _GameScreenState extends State<GameScreen> {
     }
 
     _terminalLogs.clear();
-    _addLog("SYSTEM INITIALIZED. NEURAL TUNNEL OPENED.");
-    _addLog("TARGET: ${widget.level.codeName}");
-    _addLog("RAM CACHE CAP: $_currentRam MB.");
+    _addLog("System initialized. Neural tunnel opened.");
+    _addLog("Target: ${widget.level.name} - ${_formatCodeName(widget.level.codeName)}");
+    _addLog("RAM Cache Cap: $_currentRam MB.");
     
     if (_decoyMovesLeft > 0) {
-      _addLog("DECOY ONLINE. DRONE STANDBY READY.");
+      _addLog("Decoy online. Drone standby ready.");
     }
   }
 
@@ -107,7 +114,7 @@ class _GameScreenState extends State<GameScreen> {
     final distance = _playerCoords.distanceTo(tappedCoords);
     if (distance != 1) {
       HapticFeedback.vibrate();
-      _addLog("ERROR: TARGET LINK OUT OF RANGE.");
+      _addLog("Error: Target link out of range.");
       return;
     }
 
@@ -124,7 +131,7 @@ class _GameScreenState extends State<GameScreen> {
       targetNode.isHacked = true;
     });
 
-    _addLog("LINKED TO NODE $tappedCoords. RAM: $_currentRam MB.");
+    _addLog("Linked to node $tappedCoords. RAM: $_currentRam MB.");
 
     // Trigger node effects
     _particleController.spawn(tapOffset, CyberTheme.primaryCyan, count: 12);
@@ -133,7 +140,7 @@ class _GameScreenState extends State<GameScreen> {
       HapticFeedback.heavyImpact();
       _collectedCores++;
       _collectedCredits += targetNode.coreValue;
-      _addLog("DATA CORE CAPTURED! +${targetNode.coreValue} SYSTEM DATA.");
+      _addLog("Data core captured! +${targetNode.coreValue} system data.");
       _particleController.spawn(tapOffset, CyberTheme.successGreen, count: 20);
       setState(() {
         targetNode.type = NodeType.empty;
@@ -144,7 +151,7 @@ class _GameScreenState extends State<GameScreen> {
       setState(() {
         _firewallThreat = min(100.0, _firewallThreat + dmg);
       });
-      _addLog("WARNING: FIREWALL PENETRATED! THREAT LEVEL +$dmg%.");
+      _addLog("Warning: Firewall penetrated! Threat level +$dmg%.");
       _particleController.spawn(tapOffset, CyberTheme.errorRed, count: 25);
     } else if (targetNode.type == NodeType.port) {
       HapticFeedback.mediumImpact();
@@ -157,7 +164,7 @@ class _GameScreenState extends State<GameScreen> {
 
     // Check base game over rules
     if (_currentRam <= 0 && !_isGameWon) {
-      _loseLevel("RAM DECAY. CONNECTION DEGRADED.");
+      _loseLevel("RAM decay. Connection degraded.");
     }
   }
 
@@ -169,10 +176,10 @@ class _GameScreenState extends State<GameScreen> {
     setState(() {
       _firewallThreat = min(100.0, _firewallThreat + growth);
     });
-    _addLog("FIREWALL SCANS GROWING: +${growth.toStringAsFixed(1)}%. Current: ${_firewallThreat.toStringAsFixed(1)}%");
+    _addLog("Firewall scans growing: +${growth.toStringAsFixed(1)}%. Current: ${_firewallThreat.toStringAsFixed(1)}%");
 
     if (_firewallThreat >= 100.0) {
-      _loseLevel("FIREWALL ISOLATION PROTOCOLS ENGAGED.");
+      _loseLevel("Firewall isolation protocols engaged.");
       return;
     }
 
@@ -180,19 +187,19 @@ class _GameScreenState extends State<GameScreen> {
     if (_droneCoords != null && widget.level.dronePatrolPath.isNotEmpty) {
       if (_decoyMovesLeft > 0) {
         _decoyMovesLeft--;
-        _addLog("DECOY SHIELD ACTIVE. DRONE SIGNATURE BLOCKED. (${_decoyMovesLeft} moves left)");
+        _addLog("Decoy shield active. Drone signature blocked. (${_decoyMovesLeft} moves left)");
       } else {
         _dronePatrolIndex = (_dronePatrolIndex + 1) % widget.level.dronePatrolPath.length;
         setState(() {
           _droneCoords = widget.level.dronePatrolPath[_dronePatrolIndex];
         });
-        _addLog("WARNING: DRONE DETECTED PATROLLING NODE $_droneCoords.");
+        _addLog("Warning: Drone detected patrolling node $_droneCoords.");
       }
 
       // Check collision
       if (_droneCoords == _playerCoords) {
         HapticFeedback.vibrate();
-        _loseLevel("SECURITY DRONE IDENTIFIED SYSTEM SIGNATURE.");
+        _loseLevel("Security drone identified system signature.");
       }
     }
   }
@@ -203,8 +210,8 @@ class _GameScreenState extends State<GameScreen> {
     });
     HapticFeedback.mediumImpact();
     _particleController.spawn(offset, CyberTheme.secondaryMagenta, count: 40);
-    _addLog("EXTRACTION GATE LINKED. TRANSFERRING DATA.");
-    _addLog("SUCCESS! SECURED $_collectedCredits DATA PACKETS.");
+    _addLog("Extraction gate linked. Transferring data.");
+    _addLog("Success! Secured $_collectedCredits data packets.");
 
     // Write progress
     await GameStorage.addCredits(_collectedCredits);
@@ -216,7 +223,7 @@ class _GameScreenState extends State<GameScreen> {
       _isGameOver = true;
     });
     HapticFeedback.vibrate();
-    _addLog("ALERT: SYSTEM DISCONNECTED. $reason");
+    _addLog("Alert: System disconnected. $reason");
   }
 
   @override
@@ -280,7 +287,7 @@ class _GameScreenState extends State<GameScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "RAM ENERGY: $_currentRam / $_maxRam MB",
+                                "RAM Energy: $_currentRam / $_maxRam MB",
                                 style: CyberTheme.terminalBody.copyWith(color: CyberTheme.primaryCyan),
                               ),
                               const SizedBox(height: 6),
@@ -308,13 +315,12 @@ class _GameScreenState extends State<GameScreen> {
                         Column(
                           children: [
                             Text(
-                              "FIREWALL THREAT",
+                              "Firewall Threat",
                               style: CyberTheme.terminalBody.copyWith(color: CyberTheme.errorRed),
                             ),
                             Text(
                               "${_firewallThreat.toStringAsFixed(0)}%",
                               style: TextStyle(
-                                fontFamily: 'Courier',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18,
                                 color: _firewallThreat > 75.0 ? CyberTheme.errorRed : CyberTheme.accentAmber,
@@ -426,8 +432,8 @@ class _GameScreenState extends State<GameScreen> {
                     const SizedBox(height: 16),
 
                     // Cyber Terminal Output Log
-                    const Text(
-                      "TERMINAL LOG OUTPUT:",
+                    Text(
+                      "Terminal Log Output:",
                       style: CyberTheme.terminalAccent,
                     ),
                     const SizedBox(height: 6),
@@ -450,7 +456,6 @@ class _GameScreenState extends State<GameScreen> {
                                 _terminalLogs[index],
                                 style: const TextStyle(
                                   color: CyberTheme.terminalGreen,
-                                  fontFamily: 'Courier',
                                   fontSize: 12,
                                 ),
                               ),
@@ -495,9 +500,8 @@ class _GameScreenState extends State<GameScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            _isGameWon ? "EXTRACTION SUCCESS" : "CONNECTION TERMINATED",
+                            _isGameWon ? "Extraction Success" : "Connection Terminated",
                             style: TextStyle(
-                              fontFamily: 'Courier',
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                               color: _isGameWon ? CyberTheme.successGreen : CyberTheme.errorRed,
@@ -511,7 +515,6 @@ class _GameScreenState extends State<GameScreen> {
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontFamily: 'Courier',
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -531,8 +534,8 @@ class _GameScreenState extends State<GameScreen> {
                                   Navigator.pop(context);
                                 },
                                 child: const Text(
-                                  "MENU",
-                                  style: TextStyle(fontFamily: 'Courier', color: Colors.white),
+                                  "Menu",
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               ),
                               ElevatedButton(
@@ -549,8 +552,8 @@ class _GameScreenState extends State<GameScreen> {
                                   });
                                 },
                                 child: Text(
-                                  _isGameWon ? "REPLAY" : "RETRY",
-                                  style: const TextStyle(fontFamily: 'Courier', color: Colors.black, fontWeight: FontWeight.bold),
+                                  _isGameWon ? "Replay" : "Retry",
+                                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                 ),
                               ),
                             ],

@@ -21,15 +21,15 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   final ParticleController _particleController = ParticleController();
 
   double _loadingProgress = 0.0;
-  String _statusText = "INITIALIZING NEURAL LINK...";
+  String _statusText = "Initializing neural link...";
   Timer? _progressTimer;
 
   final List<String> _statusSequence = [
-    "INITIALIZING NEURAL LINK...",
-    "ESTABLISHING SECURE PROTOCOLS...",
-    "LOADING MAINFRAME NODES...",
-    "DECRYPTING CORE ALGORITHMS...",
-    "SYSTEM ACCESS GRANTED.",
+    "Initializing neural link...",
+    "Establishing secure protocols...",
+    "Loading mainframe nodes...",
+    "Decrypting core algorithms...",
+    "System access granted.",
   ];
 
   @override
@@ -202,13 +202,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
                     // App Title
                     const Text(
-                      "CYBERHEX",
+                      "CyberHex",
                       style: TextStyle(
-                        fontFamily: 'Courier',
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        letterSpacing: 8.0,
+                        letterSpacing: 6.0,
                         shadows: [
                           Shadow(color: CyberTheme.primaryCyan, blurRadius: 16),
                         ],
@@ -216,12 +215,11 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     ),
                     const SizedBox(height: 6),
                     const Text(
-                      "SYSTEM INITIALIZING...",
+                      "System Initializing...",
                       style: TextStyle(
-                        fontFamily: 'Courier',
                         fontSize: 12,
                         color: CyberTheme.secondaryMagenta,
-                        letterSpacing: 3.0,
+                        letterSpacing: 2.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -233,7 +231,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       "> $_statusText",
                       textAlign: TextAlign.center,
                       style: const TextStyle(
-                        fontFamily: 'Courier',
                         fontSize: 13,
                         color: CyberTheme.terminalGreen,
                         fontWeight: FontWeight.w600,
@@ -265,7 +262,6 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     Text(
                       "${(_loadingProgress * 100).toInt()}%",
                       style: const TextStyle(
-                        fontFamily: 'Courier',
                         fontSize: 12,
                         color: CyberTheme.primaryCyan,
                         fontWeight: FontWeight.bold,

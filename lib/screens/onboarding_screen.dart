@@ -107,16 +107,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "MISSION_BRIEF // 0${_currentPage + 1}",
+                          "Mission Brief // 0${_currentPage + 1}",
                           style: CyberTheme.terminalMuted.copyWith(fontWeight: FontWeight.bold),
                         ),
                         if (_currentPage < 3)
                           TextButton(
                             onPressed: _finishOnboarding,
                             child: const Text(
-                              "// SKIP",
+                              "// Skip",
                               style: TextStyle(
-                                fontFamily: 'Courier',
                                 color: CyberTheme.secondaryMagenta,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -140,26 +139,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                       },
                       children: [
                         _buildSlide(
-                          title: "WELCOME HACKER",
-                          subtitle: "THE MISSION OVERVIEW",
+                          title: "Welcome Hacker",
+                          subtitle: "The Mission Overview",
                           description: "You are an elite Node Hacker operating in the deep shadows. Your goal is to infiltrate high-security corporate node networks, breach their firewalls, and extract critical core intelligence.",
                           child: _buildWelcomeGraphic(),
                         ),
                         _buildSlide(
-                          title: "TRAVERSE NODES",
-                          subtitle: "RAM RESOURCE MANAGEMENT",
+                          title: "Traverse Nodes",
+                          subtitle: "RAM Resource Management",
                           description: "In CyberHex, you move by linking to adjacent nodes. Each hop consumes 1 MB of your RAM Energy. Plan your route carefully: if your RAM cache decays to zero, your connection drops and you fail.",
                           child: _buildTraversalGraphic(),
                         ),
                         _buildSlide(
-                          title: "AVOID THREATS",
-                          subtitle: "SECURITY DETECTION & ESCAPE",
+                          title: "Avoid Threats",
+                          subtitle: "Security Detection & Escape",
                           description: "Beware! Stepping on Firewall nodes triggers immediate alarms (+25% threat speed). Watch out for security Drones patrolling the paths (marked with dotted amber lines). Seek and enter the green Extraction Gate to escape and secure your loot.",
                           child: _buildThreatsGraphic(),
                         ),
                         _buildSlide(
-                          title: "UPGRADE ARSENAL",
-                          subtitle: "MAINFRAME UPGRADES",
+                          title: "Upgrade Arsenal",
+                          subtitle: "Mainframe Upgrades",
                           description: "Redeem extracted DATA credits at the Terminal Shop to upgrade your rig. Expand your max RAM, install Jammers to slow down firewall tracing, or buy Decoys to hide from security patrol drone paths.",
                           child: _buildShopGraphic(),
                         ),
@@ -199,13 +198,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                             ),
                             child: Center(
                               child: Text(
-                                _currentPage == 3 ? "ENTER NEURAL LINK" : "PROCEED PROTOCOL",
+                                _currentPage == 3 ? "Enter Neural Link" : "Proceed Protocol",
                                 style: TextStyle(
-                                  fontFamily: 'Courier',
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                   color: _currentPage == 3 ? CyberTheme.successGreen : CyberTheme.primaryCyan,
-                                  letterSpacing: 2.0,
+                                  letterSpacing: 1.5,
                                 ),
                               ),
                             ),
@@ -242,11 +240,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
           Text(
             title,
             style: const TextStyle(
-              fontFamily: 'Courier',
-              fontSize: 28,
+              fontSize: 26,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              letterSpacing: 2.0,
+              letterSpacing: 1.5,
               shadows: [
                 Shadow(color: CyberTheme.primaryCyan, blurRadius: 10),
               ],
@@ -257,11 +254,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
           Text(
             subtitle,
             style: const TextStyle(
-              fontFamily: 'Courier',
               fontSize: 12,
               color: CyberTheme.secondaryMagenta,
               fontWeight: FontWeight.bold,
-              letterSpacing: 1.5,
+              letterSpacing: 1.0,
             ),
             textAlign: TextAlign.center,
           ),
@@ -375,8 +371,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "RAM ENERGY CACHE",
-                      style: TextStyle(fontFamily: 'Courier', fontSize: 10, color: CyberTheme.primaryCyan),
+                      "RAM Energy Cache",
+                      style: TextStyle(fontSize: 10, color: CyberTheme.primaryCyan),
                     ),
                     AnimatedBuilder(
                       animation: _animController,
@@ -384,7 +380,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                         final val = 12 - (_animController.value * 4).round();
                         return Text(
                           "$val/12 MB",
-                          style: const TextStyle(fontFamily: 'Courier', fontSize: 10, color: CyberTheme.primaryCyan, fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontSize: 10, color: CyberTheme.primaryCyan, fontWeight: FontWeight.bold),
                         );
                       },
                     ),
@@ -454,9 +450,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  "FIREWALL\n(+25% THREAT)",
+                  "Firewall\n(+25% Threat)",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'Courier', fontSize: 9, color: CyberTheme.errorRed, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 9, color: CyberTheme.errorRed, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -485,9 +481,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  "SECURITY DRONE\n(AVOID PATH)",
+                  "Security Drone\n(Avoid Path)",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'Courier', fontSize: 9, color: CyberTheme.accentAmber, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 9, color: CyberTheme.accentAmber, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -516,9 +512,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  "EXTRACTION\n(ESCAPE PORT)",
+                  "Extraction\n(Escape Port)",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontFamily: 'Courier', fontSize: 9, color: CyberTheme.successGreen, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 9, color: CyberTheme.successGreen, fontWeight: FontWeight.bold),
                 ),
               ],
             ),
@@ -528,23 +524,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
     );
   }
 
-  // Slide 4 Graphic: Upgrades Terminal Shop Mock
   Widget _buildShopGraphic() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildShopItemMock(Icons.battery_charging_full, "RAM OVERCLOCK", "+2 MAX RAM ENERGY", "ACTIVE"),
+        _buildShopItemMock(Icons.battery_charging_full, "RAM Overclock", "+2 Max RAM Energy", "Active"),
         const SizedBox(height: 12),
-        _buildShopItemMock(Icons.settings_input_antenna, "SIGNAL JAMMER", "SLOWS FIREWALL SCANS", "UPGRADE"),
+        _buildShopItemMock(Icons.settings_input_antenna, "Signal Jammer", "Slows Firewall Scans", "Upgrade"),
         const SizedBox(height: 12),
-        _buildShopItemMock(Icons.radar, "DECOY SIGNATURE", "STALL PATROL DRONES", "LOCKED"),
+        _buildShopItemMock(Icons.radar, "Decoy Signature", "Stall Patrol Drones", "Locked"),
       ],
     );
   }
 
   Widget _buildShopItemMock(IconData icon, String title, String benefit, String state) {
-    final isLocked = state == "LOCKED";
-    final isInstalled = state == "ACTIVE";
+    final isLocked = state == "Locked";
+    final isInstalled = state == "Active";
     
     return Container(
       width: 260,
@@ -579,7 +574,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                 Text(
                   title,
                   style: TextStyle(
-                    fontFamily: 'Courier',
                     fontSize: 11,
                     fontWeight: FontWeight.bold,
                     color: isLocked ? Colors.grey : Colors.white,
@@ -588,7 +582,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                 Text(
                   benefit,
                   style: TextStyle(
-                    fontFamily: 'Courier',
                     fontSize: 9,
                     color: isLocked ? Colors.grey.shade600 : CyberTheme.secondaryMagenta,
                   ),
@@ -605,7 +598,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
             child: Text(
               state,
               style: TextStyle(
-                fontFamily: 'Courier',
                 fontSize: 8,
                 fontWeight: FontWeight.bold,
                 color: isInstalled
@@ -760,7 +752,7 @@ class TutorialHexPainter extends CustomPainter {
     final textPainterStart = TextPainter(
       text: const TextSpan(
         text: 'A',
-        style: TextStyle(fontFamily: 'Courier', fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
       ),
       textDirection: TextDirection.ltr,
     )..layout();
@@ -769,7 +761,7 @@ class TutorialHexPainter extends CustomPainter {
     final textPainterEnd = TextPainter(
       text: const TextSpan(
         text: 'B',
-        style: TextStyle(fontFamily: 'Courier', fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 10, color: Colors.white, fontWeight: FontWeight.bold),
       ),
       textDirection: TextDirection.ltr,
     )..layout();

@@ -31,6 +31,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     });
   }
 
+  String _formatCodeName(String name) {
+    return name.split('_').map((word) {
+      if (word.isEmpty) return '';
+      return word[0].toUpperCase() + word.substring(1).toLowerCase();
+    }).join(' ');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +71,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          "v1.0.0 // ACTIVE",
+                        Text(
+                          "v1.0.0 // Active",
                           style: CyberTheme.terminalMuted,
                         ),
                         Row(
@@ -93,10 +100,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                     Icon(Icons.help_outline, color: CyberTheme.primaryCyan, size: 14),
                                     SizedBox(width: 4),
                                     Text(
-                                      "INFO",
+                                      "Info",
                                       style: TextStyle(
                                         color: CyberTheme.primaryCyan,
-                                        fontFamily: 'Courier',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
@@ -127,10 +133,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                     const Icon(Icons.analytics, color: CyberTheme.successGreen, size: 14),
                                     const SizedBox(width: 6),
                                     Text(
-                                      "$_credits DATA",
+                                      "$_credits Data",
                                       style: const TextStyle(
                                         color: CyberTheme.successGreen,
-                                        fontFamily: 'Courier',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,
                                       ),
@@ -146,8 +151,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     const SizedBox(height: 24),
                     
                     // Levels dashboard list
-                    const Text(
-                      "SELECT TARGET NODE NETWORK:",
+                    Text(
+                      "Select Target Node Network:",
                       style: CyberTheme.terminalAccent,
                     ),
                     const SizedBox(height: 12),
@@ -159,7 +164,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                         itemBuilder: (context, index) {
                           final level = levels[index];
                           final isUnlocked = level.id <= _unlockedLevel;
-
+ 
                           return GestureDetector(
                             onTap: isUnlocked
                                 ? () {
@@ -176,8 +181,8 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         content: Text(
-                                          "NODE NETWORK ENCRYPTED. COMPLETE PREVIOUS STAGES.",
-                                          style: TextStyle(fontFamily: 'Courier', color: CyberTheme.errorRed),
+                                          "Node network encrypted. Complete previous stages.",
+                                          style: TextStyle(color: CyberTheme.errorRed),
                                         ),
                                         backgroundColor: CyberTheme.cardBackground,
                                       ),
@@ -209,15 +214,13 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                         Text(
                                           level.name,
                                           style: TextStyle(
-                                            fontFamily: 'Courier',
                                             fontWeight: FontWeight.bold,
                                             color: isUnlocked ? Colors.white : Colors.grey,
                                           ),
                                         ),
                                         Text(
-                                          level.codeName,
+                                          _formatCodeName(level.codeName),
                                           style: TextStyle(
-                                            fontFamily: 'Courier',
                                             fontSize: 12,
                                             color: isUnlocked ? CyberTheme.secondaryMagenta : Colors.grey.shade600,
                                           ),
@@ -247,15 +250,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           context: context,
                           builder: (context) => AlertDialog(
                             backgroundColor: CyberTheme.cardBackground,
-                            title: const Text("PURGE ALL DATA?", style: TextStyle(color: CyberTheme.errorRed, fontFamily: 'Courier')),
+                            title: const Text("Purge all data?", style: TextStyle(color: CyberTheme.errorRed)),
                             content: const Text(
-                              "WARNING: This will wipe all system credits and unlocked configurations permanently.",
-                              style: TextStyle(color: Colors.white, fontFamily: 'Courier'),
+                              "Warning: This will wipe all system credits and unlocked configurations permanently.",
+                              style: TextStyle(color: Colors.white),
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text("CANCEL", style: TextStyle(color: Colors.white, fontFamily: 'Courier')),
+                                child: const Text("Cancel", style: TextStyle(color: Colors.white)),
                               ),
                               TextButton(
                                 onPressed: () async {
@@ -263,17 +266,16 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                   Navigator.pop(context);
                                   _loadProgress();
                                 },
-                                child: const Text("PURGE", style: TextStyle(color: CyberTheme.errorRed, fontFamily: 'Courier')),
+                                child: const Text("Purge", style: TextStyle(color: CyberTheme.errorRed)),
                               ),
                             ],
                           ),
                         );
                       },
                       child: const Text(
-                        "// PURGE DATABASE PROGRESS",
+                        "// Purge Database Progress",
                         style: TextStyle(
                           color: CyberTheme.errorRed,
-                          fontFamily: 'Courier',
                           fontSize: 12,
                         ),
                       ),

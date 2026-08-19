@@ -27,28 +27,28 @@ class _ShopScreenState extends State<ShopScreen> {
       _upgrades = [
         UpgradeItem(
           id: 'ram',
-          name: 'RAM EXPANSION',
+          name: 'RAM Expansion',
           description: 'Increases starting action capacity by +2 RAM per level.',
           baseCost: 100,
           level: GameStorage.getUpgradeLevel('ram'),
         ),
         UpgradeItem(
           id: 'jammer',
-          name: 'FIREWALL JAMMER',
+          name: 'Firewall Jammer',
           description: 'Reduces threat level growth per move by 15%.',
           baseCost: 120,
           level: GameStorage.getUpgradeLevel('jammer'),
         ),
         UpgradeItem(
           id: 'scanner',
-          name: 'NODE RADAR SCANNER',
+          name: 'Node Radar Scanner',
           description: 'Increases data detection ranges to locate far-off network packet nodes.',
           baseCost: 150,
           level: GameStorage.getUpgradeLevel('scanner'),
         ),
         UpgradeItem(
           id: 'decoy',
-          name: 'SIGNAL DECOY',
+          name: 'Signal Decoy',
           description: 'Deploy decoys. Drones start level in standby mode for 3 moves.',
           baseCost: 200,
           level: GameStorage.getUpgradeLevel('decoy'),
@@ -67,8 +67,8 @@ class _ShopScreenState extends State<ShopScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            'UPGRADE INSTALLED: ${item.name} LVL ${item.level + 1}',
-            style: const TextStyle(fontFamily: 'Courier', color: CyberTheme.successGreen),
+            'Upgrade Installed: ${item.name} Lvl ${item.level + 1}',
+            style: const TextStyle(color: CyberTheme.successGreen),
           ),
           backgroundColor: CyberTheme.cardBackground,
         ),
@@ -79,8 +79,8 @@ class _ShopScreenState extends State<ShopScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'SYSTEM UPGRADE AT MAXIMUM EFFICIENCY.',
-            style: TextStyle(fontFamily: 'Courier', color: CyberTheme.accentAmber),
+            'System upgrade at maximum efficiency.',
+            style: TextStyle(color: CyberTheme.accentAmber),
           ),
           backgroundColor: CyberTheme.cardBackground,
         ),
@@ -90,8 +90,8 @@ class _ShopScreenState extends State<ShopScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'INSUFFICIENT SYSTEM CREDITS. NEED MORE DATA.',
-            style: TextStyle(fontFamily: 'Courier', color: CyberTheme.errorRed),
+            'Insufficient system credits. Need more data.',
+            style: TextStyle(color: CyberTheme.errorRed),
           ),
           backgroundColor: CyberTheme.cardBackground,
         ),
@@ -123,13 +123,13 @@ class _ShopScreenState extends State<ShopScreen> {
                         Navigator.pop(context);
                       },
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "SYSTEM UPGRADES",
+                            "System Upgrades",
                             style: CyberTheme.terminalTitle,
                           ),
                         ),
@@ -143,10 +143,9 @@ class _ShopScreenState extends State<ShopScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        "$_credits DATA",
+                        "$_credits Data",
                         style: const TextStyle(
                           color: CyberTheme.successGreen,
-                          fontFamily: 'Courier',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -193,7 +192,6 @@ class _ShopScreenState extends State<ShopScreen> {
                                     child: Text(
                                       item.name,
                                       style: const TextStyle(
-                                        fontFamily: 'Courier',
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white,
@@ -203,9 +201,8 @@ class _ShopScreenState extends State<ShopScreen> {
                                 ),
                               ),
                               Text(
-                                "LVL ${item.level} / ${item.maxLevel}",
+                                "Lvl ${item.level} / ${item.maxLevel}",
                                 style: TextStyle(
-                                  fontFamily: 'Courier',
                                   color: isMax ? CyberTheme.accentAmber : CyberTheme.primaryCyan,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -263,9 +260,8 @@ class _ShopScreenState extends State<ShopScreen> {
                                   ),
                                 ),
                                 child: Text(
-                                  isMax ? "MAXED" : "$cost DATA",
+                                  isMax ? "Maxed" : "$cost Data",
                                   style: TextStyle(
-                                    fontFamily: 'Courier',
                                     color: canBuy ? Colors.black : Colors.grey,
                                     fontWeight: FontWeight.bold,
                                   ),
