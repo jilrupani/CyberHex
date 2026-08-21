@@ -10,8 +10,16 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CyberTheme.background,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: CyberTheme.bgGradient,
+          image: DecorationImage(
+            image: const AssetImage('assets/cyber_wallpaper.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.72),
+              BlendMode.darken,
+            ),
+          ),
         ),
         child: Stack(
           children: [
@@ -40,7 +48,7 @@ class SettingsScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "SYSTEM SETTINGS",
+                          "System Settings",
                           style: CyberTheme.terminalTitle.copyWith(fontSize: 20),
                         ),
                       ],
@@ -49,7 +57,7 @@ class SettingsScreen extends StatelessWidget {
 
                     // Category 2: Hacking Database
                     Text(
-                      "HACKING DATABASE & REFERENCE",
+                      "Hacking Database & Reference",
                       style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
                     ),
                     const SizedBox(height: 12),

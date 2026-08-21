@@ -31,7 +31,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   }
 
   String _formatCodeName(String name) {
-    return name.split('_').map((word) {
+    return name.split('_').where((word) {
+      return int.tryParse(word) == null;
+    }).map((word) {
       if (word.isEmpty) return '';
       return word[0].toUpperCase() + word.substring(1).toLowerCase();
     }).join(' ');
@@ -44,8 +46,16 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: CyberTheme.bgGradient,
+          image: DecorationImage(
+            image: const AssetImage('assets/cyber_wallpaper.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.72),
+              BlendMode.darken,
+            ),
+          ),
         ),
         child: Stack(
           children: [

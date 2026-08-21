@@ -9,8 +9,16 @@ class RulesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: CyberTheme.background,
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: CyberTheme.bgGradient,
+          image: DecorationImage(
+            image: const AssetImage('assets/cyber_wallpaper.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.72),
+              BlendMode.darken,
+            ),
+          ),
         ),
         child: Stack(
           children: [
@@ -39,7 +47,7 @@ class RulesScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "HACKING PROTOCOLS",
+                          "Hacking Protocols",
                           style: CyberTheme.terminalTitle.copyWith(fontSize: 18),
                         ),
                       ],
@@ -53,7 +61,7 @@ class RulesScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _buildSectionHeader("01. MISSION & GAMEPLAY OBJECTIVE"),
+                            _buildSectionHeader("01. Mission & Gameplay Objective"),
                             _buildInfoCard(
                               title: "What is CyberHex?",
                               description: "You play as an elite Node Hacker operating in the deep shadows. Your goal is to infiltrate high-security corporate node networks, breach their firewalls, harvest valuable data cores, and escape safely.",
@@ -70,7 +78,7 @@ class RulesScreen extends StatelessWidget {
                             ),
 
                             const SizedBox(height: 24),
-                            _buildSectionHeader("02. NODE & COLOR-WISE DIRECTORY"),
+                            _buildSectionHeader("02. Node & Color-Wise Directory"),
                             Text(
                               "Memorize the color codes to identify nodes instantly on the tactical map:",
                               style: CyberTheme.terminalMuted,
@@ -163,7 +171,7 @@ class RulesScreen extends StatelessWidget {
                             ),
 
                             const SizedBox(height: 24),
-                            _buildSectionHeader("03. MAIN SETTINGS & STAGES DETAILS"),
+                            _buildSectionHeader("03. Main Settings & Stages Details"),
                             _buildInfoCard(
                               title: "Total Game Stages (60 Levels)",
                               description: "The mainframe contains three classes of stages:\n"

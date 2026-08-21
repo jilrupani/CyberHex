@@ -99,8 +99,16 @@ class _ShopScreenState extends State<ShopScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: CyberTheme.bgGradient,
+          image: DecorationImage(
+            image: const AssetImage('assets/cyber_wallpaper.png'),
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(0.72),
+              BlendMode.darken,
+            ),
+          ),
         ),
         child: SafeArea(
           child: Column(
