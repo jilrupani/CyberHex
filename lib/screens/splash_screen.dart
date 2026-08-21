@@ -20,16 +20,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   final ParticleController _particleController = ParticleController();
 
   double _loadingProgress = 0.0;
-  String _statusText = "Initializing neural link...";
   Timer? _progressTimer;
-
-  final List<String> _statusSequence = [
-    "Initializing neural link...",
-    "Establishing secure protocols...",
-    "Loading mainframe nodes...",
-    "Decrypting core algorithms...",
-    "System access granted.",
-  ];
 
   @override
   void initState() {
@@ -56,13 +47,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
     _progressTimer = Timer.periodic(const Duration(milliseconds: intervalMs), (timer) {
       if (!mounted) return;
 
-      step++;
       setState(() {
+        step++;
         _loadingProgress = step / totalSteps;
-        
-        // Update status text periodically
-        final seqIdx = (step / (totalSteps / _statusSequence.length)).floor().clamp(0, _statusSequence.length - 1);
-        _statusText = _statusSequence[seqIdx];
       });
 
       // Emit subtle ambient cyber sparks
@@ -224,17 +211,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
                     const Spacer(flex: 2),
 
-                    // Status Terminal Line
-                    Text(
-                      "> $_statusText",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: CyberTheme.terminalGreen,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+
 
                     // Neon Progress Bar Indicator
                     Container(

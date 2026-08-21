@@ -4,7 +4,7 @@ import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
 import 'game_screen.dart';
 import 'shop_screen.dart';
-import 'onboarding_screen.dart';
+import 'settings_screen.dart';
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({super.key});
@@ -75,31 +75,22 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const OnboardingScreen(isReplay: true),
+                                builder: (context) => const SettingsScreen(),
                               ),
                             );
                           },
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                            padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: CyberTheme.cardBackground,
                               border: Border.all(color: CyberTheme.primaryCyan, width: 1.5),
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4),
                             ),
-                            child: const Row(
-                              children: [
-                                Icon(Icons.help_outline, color: CyberTheme.primaryCyan, size: 14),
-                                SizedBox(width: 4),
-                                Text(
-                                  "Info",
-                                  style: TextStyle(
-                                    color: CyberTheme.primaryCyan,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ],
+                            child: const Icon(
+                              Icons.settings,
+                              color: CyberTheme.primaryCyan,
+                              size: 20,
                             ),
                           ),
                         ),
