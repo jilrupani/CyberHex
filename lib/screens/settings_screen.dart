@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
 import '../theme/cyber_theme.dart';
 import 'rules_screen.dart';
+import '../utils/game_storage.dart';
+import '../utils/audio_manager.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  bool _musicEnabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _musicEnabled = GameStorage.getMusicEnabled();
+  }
+
+  void _toggleMusic(bool value) async {
+    setState(() {
+      _musicEnabled = value;
+    });
+    await AudioManager().setMusicEnabled(value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +76,81 @@ class SettingsScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 32),
+
+                    // Category 1: Sound Settings
+                    Text(
+                      "Audio Configurations",
+                      style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: CyberTheme.cardBackground,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: _musicEnabled ? CyberTheme.primaryCyan.withOpacity(0.4) : const Color(0xFF1F2438),
+                          width: 1.5
+                        ),
+                        boxShadow: _musicEnabled
+                            ? [
+                                BoxShadow(
+                                  color: CyberTheme.primaryCyan.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  spreadRadius: 1,
+                                )
+                              ]
+                            : [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                )
+                              ],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              _musicEnabled ? Icons.music_note : Icons.music_off,
+                              color: _musicEnabled ? CyberTheme.primaryCyan : const Color(0xFF6B728E),
+                              size: 24
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Background Music",
+                                    style: CyberTheme.terminalBody.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "Ambient sci-fi cyber sound loops",
+                                    style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Switch(
+                              value: _musicEnabled,
+                              onChanged: _toggleMusic,
+                              activeThumbColor: CyberTheme.primaryCyan,
+                              activeTrackColor: CyberTheme.primaryCyan.withOpacity(0.3),
+                              inactiveThumbColor: const Color(0xFF6B728E),
+                              inactiveTrackColor: const Color(0xFF16192B),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 24),
 
                     // Category 2: Hacking Database
                     Text(

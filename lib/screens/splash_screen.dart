@@ -6,6 +6,7 @@ import '../widgets/particle_emitter.dart';
 import 'main_menu_screen.dart';
 import 'onboarding_screen.dart';
 import '../utils/game_storage.dart';
+import '../utils/audio_manager.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -25,6 +26,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
   @override
   void initState() {
     super.initState();
+
+    // Initialize Background Music
+    AudioManager().init();
 
     _rotationController = AnimationController(
       vsync: this,

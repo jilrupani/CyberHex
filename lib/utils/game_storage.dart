@@ -7,6 +7,7 @@ class GameStorage {
   static const String _keyUnlockedLevel = 'cyberhex_unlocked_level';
   static const String _keyUpgradePrefix = 'cyberhex_upgrade_';
   static const String _keyOnboardingCompleted = 'cyberhex_onboarding_completed';
+  static const String _keyMusicEnabled = 'cyberhex_music_enabled';
 
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -18,6 +19,14 @@ class GameStorage {
 
   static Future<void> setOnboardingCompleted(bool value) async {
     await _prefs?.setBool(_keyOnboardingCompleted, value);
+  }
+
+  static bool getMusicEnabled() {
+    return _prefs?.getBool(_keyMusicEnabled) ?? true;
+  }
+
+  static Future<void> setMusicEnabled(bool value) async {
+    await _prefs?.setBool(_keyMusicEnabled, value);
   }
 
   static int getCredits() {
