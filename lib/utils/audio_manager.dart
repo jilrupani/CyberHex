@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
 import 'game_storage.dart';
@@ -10,11 +11,12 @@ class AudioManager {
 
   final AudioPlayer _bgmPlayer = AudioPlayer();
   bool _isInitialized = false;
+  StreamSubscription<Duration>? _positionSubscription;
 
   Future<void> init() async {
     if (_isInitialized) return;
     
-    // Set loop mode so the background music loops infinitely
+    // Set loop mode so the background music loops
     await _bgmPlayer.setReleaseMode(ReleaseMode.loop);
     _isInitialized = true;
 
@@ -29,9 +31,17 @@ class AudioManager {
       if (!_isInitialized) {
         await init();
       }
+      
       // AudioPlayers 6.x: AssetSource references files relative to the assets/ folder.
-      // E.g. AssetSource('cyber_bgm.wav') plays 'assets/cyber_bgm.wav'.
-      await _bgmPlayer.play(AssetSource('cyber_bgm.wav'));
+      await _bgmPlayer.play(AssetSource('the_mountain-silent-hope-143298.mp3'));
+
+      // Listen for position updates to reset every 10 seconds
+      await _positionSubscription?.cancel();
+      _positionSubscription = _bgmPlayer.onPositionChanged.listen((position) {
+        if (position >= const Duration(seconds: 10)) {
+          _bgmPlayer.seek(Duration.zero);
+        }
+      });
     } catch (e) {
       debugPrint("Error playing background music: $e");
     }
@@ -39,6 +49,8 @@ class AudioManager {
 
   Future<void> stopBgm() async {
     try {
+      await _positionSubscription?.cancel();
+      _positionSubscription = null;
       await _bgmPlayer.stop();
     } catch (e) {
       debugPrint("Error stopping background music: $e");

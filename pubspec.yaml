@@ -63,7 +63,7 @@ flutter:
 
   assets:
     - assets/cyber_wallpaper.png
-    - assets/cyber_bgm.wav
+    - assets/the_mountain-silent-hope-143298.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
