@@ -63,6 +63,11 @@ flutter:
 
   assets:
     - assets/cyber_wallpaper.png
+    - assets/cyber_wallpaper_1.png
+    - assets/cyber_wallpaper_2.png
+    - assets/cyber_wallpaper_3.png
+    - assets/cyber_wallpaper_4.png
+    - assets/cyber_wallpaper_5.png
     - assets/the_mountain-silent-hope-143298.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
