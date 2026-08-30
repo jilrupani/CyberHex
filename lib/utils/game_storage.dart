@@ -61,9 +61,56 @@ class GameStorage {
     await _prefs?.setInt('$_keyUpgradePrefix$upgradeId', level);
   }
 
+  static const String _keySelectedWallpaper = 'cyberhex_selected_wallpaper';
+  static const String _keyUnlockedWallpapers = 'cyberhex_unlocked_wallpapers';
+  static const String _keyLastDailyReward = 'cyberhex_last_daily_reward';
+
+  static String getSelectedWallpaper() {
+    return _prefs?.getString(_keySelectedWallpaper) ?? 'matrix_cyan';
+  }
+
+  static Future<void> setSelectedWallpaper(String id) async {
+    await _prefs?.setString(_keySelectedWallpaper, id);
+  }
+
+  static List<String> getUnlockedWallpapers() {
+    final list = _prefs?.getStringList(_keyUnlockedWallpapers);
+    if (list == null || list.isEmpty) {
+      return ['matrix_cyan'];
+    }
+    return list;
+  }
+
+  static Future<void> unlockWallpaper(String id) async {
+    final unlocked = getUnlockedWallpapers();
+    if (!unlocked.contains(id)) {
+      unlocked.add(id);
+      await _prefs?.setStringList(_keyUnlockedWallpapers, unlocked);
+    }
+  }
+
+  static int getLastDailyRewardTime() {
+    return _prefs?.getInt(_keyLastDailyReward) ?? 0;
+  }
+
+  static Future<void> setLastDailyRewardTime(int timestamp) async {
+    await _prefs?.setInt(_keyLastDailyReward, timestamp);
+  }
+
+  static bool isDailyRewardAvailable() {
+    final lastTime = getLastDailyRewardTime();
+    if (lastTime == 0) return true;
+    final lastDate = DateTime.fromMillisecondsSinceEpoch(lastTime);
+    final now = DateTime.now();
+    return now.difference(lastDate).inHours >= 24;
+  }
+
   static Future<void> resetProgress() async {
     await _prefs?.setInt(_keyCredits, 0);
     await _prefs?.setInt(_keyUnlockedLevel, 1);
+    await _prefs?.setString(_keySelectedWallpaper, 'matrix_cyan');
+    await _prefs?.setStringList(_keyUnlockedWallpapers, ['matrix_cyan']);
+    await _prefs?.setInt(_keyLastDailyReward, 0);
     
     // Clear all upgrade keys
     final keys = _prefs?.getKeys() ?? {};

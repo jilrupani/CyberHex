@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../models/wallpaper_model.dart';
 
 class CyberTheme {
   // Brand Colors
@@ -16,6 +17,30 @@ class CyberTheme {
   static Color primaryGlow = primaryCyan.withOpacity(0.4);
   static Color secondaryGlow = secondaryMagenta.withOpacity(0.4);
   
+  // Dynamic Background Decoration Helper
+  static BoxDecoration getWallpaperDecoration(String wallpaperId) {
+    final wp = CyberWallpaper.getById(wallpaperId);
+    return BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: wp.gradientColors,
+      ),
+      image: DecorationImage(
+        image: AssetImage(wp.assetPath),
+        fit: BoxFit.cover,
+        colorFilter: ColorFilter.mode(
+          Colors.black.withOpacity(0.72),
+          BlendMode.darken,
+        ),
+      ),
+    );
+  }
+
+  static Color getWallpaperPrimaryColor(String wallpaperId) {
+    return CyberWallpaper.getById(wallpaperId).primaryColor;
+  }
+
   // Gradients
   static const LinearGradient bgGradient = LinearGradient(
     begin: Alignment.topCenter,

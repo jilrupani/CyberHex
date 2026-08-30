@@ -29,20 +29,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final activeWallpaperId = GameStorage.getSelectedWallpaper();
+    final activeThemeColor = CyberTheme.getWallpaperPrimaryColor(activeWallpaperId);
+
     return Scaffold(
       backgroundColor: CyberTheme.background,
       body: Container(
-        decoration: BoxDecoration(
-          gradient: CyberTheme.bgGradient,
-          image: DecorationImage(
-            image: const AssetImage('assets/cyber_wallpaper.png'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.72),
-              BlendMode.darken,
-            ),
-          ),
-        ),
+        decoration: CyberTheme.getWallpaperDecoration(activeWallpaperId),
         child: Stack(
           children: [
             // Ambient Hex Grid lines
@@ -65,13 +58,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: CyberTheme.primaryCyan),
+                          icon: Icon(Icons.arrow_back, color: activeThemeColor),
                           onPressed: () => Navigator.pop(context),
                         ),
                         const SizedBox(width: 8),
                         Text(
                           "System Settings",
-                          style: CyberTheme.terminalTitle.copyWith(fontSize: 20),
+                          style: CyberTheme.terminalTitle.copyWith(fontSize: 20, color: activeThemeColor),
                         ),
                       ],
                     ),

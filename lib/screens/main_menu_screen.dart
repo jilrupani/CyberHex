@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../models/levels_data.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/game_storage.dart';
+import '../widgets/daily_reward_widget.dart';
+import '../widgets/hacker_status_widget.dart';
 import 'game_screen.dart';
 import 'shop_screen.dart';
 import 'settings_screen.dart';
@@ -16,6 +19,7 @@ class MainMenuScreen extends StatefulWidget {
 class _MainMenuScreenState extends State<MainMenuScreen> {
   int _credits = 0;
   int _unlockedLevel = 1;
+  String _activeWallpaperId = 'matrix_cyan';
 
   @override
   void initState() {
@@ -27,6 +31,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     setState(() {
       _credits = GameStorage.getCredits();
       _unlockedLevel = GameStorage.getUnlockedLevel();
+      _activeWallpaperId = GameStorage.getSelectedWallpaper();
     });
   }
 
@@ -39,24 +44,67 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
     }).join(' ');
   }
 
+  Future<bool> _showExitConfirmationDialog(BuildContext context, Color themeColor) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: CyberTheme.cardBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: themeColor, width: 1.5),
+        ),
+        title: Row(
+          children: [
+            Icon(Icons.power_settings_new, color: themeColor),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                "Disconnect System?",
+                style: TextStyle(color: themeColor, fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          "Are you sure you want to terminate the hacking session and exit CyberHex?",
+          style: TextStyle(color: Colors.white70, fontSize: 13),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text("CANCEL", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: themeColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: const Text("EXIT GAME", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
+    return result ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
     final levels = LevelsData.getLevels();
+    final activeThemeColor = CyberTheme.getWallpaperPrimaryColor(_activeWallpaperId);
 
-    return Scaffold(
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        final shouldExit = await _showExitConfirmationDialog(context, activeThemeColor);
+        if (shouldExit) {
+          SystemNavigator.pop();
+        }
+      },
+      child: Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: CyberTheme.bgGradient,
-          image: DecorationImage(
-            image: const AssetImage('assets/cyber_wallpaper.png'),
-            fit: BoxFit.cover,
-            colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.72),
-              BlendMode.darken,
-            ),
-          ),
-        ),
+        decoration: CyberTheme.getWallpaperDecoration(_activeWallpaperId),
         child: Stack(
           children: [
             // Cyber Grid Background Lines
@@ -87,19 +135,19 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                               MaterialPageRoute(
                                 builder: (context) => const SettingsScreen(),
                               ),
-                            );
+                            ).then((_) => _loadProgress());
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
                               color: CyberTheme.cardBackground,
-                              border: Border.all(color: CyberTheme.primaryCyan, width: 1.5),
+                              border: Border.all(color: activeThemeColor, width: 1.5),
                               borderRadius: BorderRadius.circular(12),
-                              boxShadow: CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4),
+                              boxShadow: CyberTheme.neonGlow(activeThemeColor, blurRadius: 4),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.settings,
-                              color: CyberTheme.primaryCyan,
+                              color: activeThemeColor,
                               size: 20,
                             ),
                           ),
@@ -137,23 +185,36 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
+
+                    // Modular Widgets Section
+                    HackerStatusWidget(
+                      unlockedLevel: _unlockedLevel,
+                      credits: _credits,
+                      activeWallpaperId: _activeWallpaperId,
+                      themeColor: activeThemeColor,
+                    ),
+                    const SizedBox(height: 10),
+                    DailyRewardWidget(
+                      onRewardClaimed: _loadProgress,
+                      themeColor: activeThemeColor,
+                    ),
+                    const SizedBox(height: 16),
                     
-                    // Levels dashboard list
+                    // Levels dashboard list header
                     Text(
                       "Select Target Node Network:",
-                      style: CyberTheme.terminalAccent,
+                      style: CyberTheme.terminalAccent.copyWith(color: activeThemeColor),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 10),
                     
                     Expanded(
-                      flex: 4,
                       child: ListView.builder(
                         itemCount: levels.length,
                         itemBuilder: (context, index) {
                           final level = levels[index];
                           final isUnlocked = level.id <= _unlockedLevel;
- 
+
                           return GestureDetector(
                             onTap: isUnlocked
                                 ? () {
@@ -181,17 +242,17 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                               decoration: BoxDecoration(
                                 color: isUnlocked ? CyberTheme.cardBackground : CyberTheme.cardBackground.withOpacity(0.4),
                                 border: Border.all(
-                                  color: isUnlocked ? CyberTheme.primaryCyan : Colors.grey.shade800,
+                                  color: isUnlocked ? activeThemeColor : Colors.grey.shade800,
                                   width: 1.5,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
-                                boxShadow: isUnlocked ? CyberTheme.neonGlow(CyberTheme.primaryCyan, blurRadius: 4) : null,
+                                boxShadow: isUnlocked ? CyberTheme.neonGlow(activeThemeColor, blurRadius: 4) : null,
                               ),
                               child: Row(
                                 children: [
                                   Icon(
                                     isUnlocked ? Icons.wifi_find : Icons.lock_outline,
-                                    color: isUnlocked ? CyberTheme.primaryCyan : Colors.grey,
+                                    color: isUnlocked ? activeThemeColor : Colors.grey,
                                   ),
                                   const SizedBox(width: 16),
                                   Expanded(
@@ -216,9 +277,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                     ),
                                   ),
                                   if (isUnlocked)
-                                    const Icon(
+                                    Icon(
                                       Icons.arrow_forward_ios,
-                                      color: CyberTheme.primaryCyan,
+                                      color: activeThemeColor,
                                       size: 16,
                                     ),
                                 ],
@@ -249,8 +310,10 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                               TextButton(
                                 onPressed: () async {
                                   await GameStorage.resetProgress();
-                                  Navigator.pop(context);
-                                  _loadProgress();
+                                  if (context.mounted) {
+                                    Navigator.pop(context);
+                                    _loadProgress();
+                                  }
                                 },
                                 child: const Text("Purge", style: TextStyle(color: CyberTheme.errorRed)),
                               ),
@@ -273,8 +336,9 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
 
 // Background painter to paint cyber grid lines
