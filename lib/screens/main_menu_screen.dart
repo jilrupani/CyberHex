@@ -261,14 +261,14 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          level.name,
+                                          AppStrings.stageLabel(level.id),
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: isUnlocked ? Colors.white : Colors.grey,
                                           ),
                                         ),
                                         Text(
-                                          _formatCodeName(level.codeName),
+                                          AppStrings.translateCodeName(level.codeName),
                                           style: TextStyle(
                                             fontSize: 12,
                                             color: isUnlocked ? CyberTheme.secondaryMagenta : Colors.grey.shade600,

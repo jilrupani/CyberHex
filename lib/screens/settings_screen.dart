@@ -89,9 +89,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const SizedBox(height: 24),
 
-                    // Category 1: Language Settings
+                    // Category 1: Language
                     Text(
-                      AppStrings.languageSettings,
+                      AppStrings.language,
                       style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
                     ),
                     const SizedBox(height: 12),

@@ -85,7 +85,7 @@ class _GameScreenState extends State<GameScreen> {
 
     _terminalLogs.clear();
     _addLog("System initialized. Neural tunnel opened.");
-    _addLog("Target: ${widget.level.name} - ${_formatCodeName(widget.level.codeName)}");
+    _addLog("Target: ${AppStrings.stageLabel(widget.level.id)} - ${AppStrings.translateCodeName(widget.level.codeName)}");
     _addLog("RAM Cache Cap: $_currentRam MB.");
     
     if (_decoyMovesLeft > 0) {
@@ -260,7 +260,7 @@ class _GameScreenState extends State<GameScreen> {
                             child: FittedBox(
                               fit: BoxFit.scaleDown,
                               child: Text(
-                                widget.level.name,
+                                AppStrings.stageLabel(widget.level.id),
                                 style: CyberTheme.terminalTitle,
                               ),
                             ),

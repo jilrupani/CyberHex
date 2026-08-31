@@ -62,35 +62,30 @@ class RulesScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            _buildSectionHeader("01. Mission & Gameplay Objective"),
+                            _buildSectionHeader(AppStrings.rulesHeader01),
                             _buildInfoCard(
-                              title: "What is CyberHex?",
-                              description: "You play as an elite Node Hacker operating in the deep shadows. Your goal is to infiltrate high-security corporate node networks, breach their firewalls, harvest valuable data cores, and escape safely.",
+                              title: AppStrings.rulesCard1Title,
+                              description: AppStrings.rulesCard1Desc,
                             ),
                             const SizedBox(height: 12),
                             _buildInfoCard(
-                              title: "Step-by-Step Gameplay Flow",
-                              description: "1. Select a Stage network target from the main menu.\n"
-                                  "2. You start at the Start Node. The system highlights adjacent nodes that you can link to.\n"
-                                  "3. Plan your route carefully: each node-to-node hop costs 1 MB of RAM.\n"
-                                  "4. Capture Data Cores on the grid to accumulate credits.\n"
-                                  "5. Evade patrol drones (moving along dotted lines) and avoid firewalls.\n"
-                                  "6. Secure your escape by stepping on the magenta Extraction Port to complete the level.",
+                              title: AppStrings.rulesCard2Title,
+                              description: AppStrings.rulesCard2Desc,
                             ),
 
                             const SizedBox(height: 24),
-                            _buildSectionHeader("02. Node & Color-Wise Directory"),
+                            _buildSectionHeader(AppStrings.rulesHeader02),
                             Text(
-                              "Memorize the color codes to identify nodes instantly on the tactical map:",
+                              AppStrings.rulesSection2Subtitle,
                               style: CyberTheme.terminalMuted,
                             ),
                             const SizedBox(height: 12),
 
                             _buildNodeDirectoryItem(
                               color: CyberTheme.primaryCyan,
-                              title: "Cyan Color (Hacker / Player Core)",
-                              badgeText: "HACKER",
-                              description: "Indicates your current active footprint in the network. A cyan target cursor showing where your system connection currently resides.",
+                              title: AppStrings.nodeCyanTitle,
+                              badgeText: AppStrings.nodeCyanBadge,
+                              description: AppStrings.nodeCyanDesc,
                               iconWidget: Container(
                                 width: 28,
                                 height: 28,
@@ -104,9 +99,9 @@ class RulesScreen extends StatelessWidget {
                             ),
                             _buildNodeDirectoryItem(
                               color: CyberTheme.successGreen,
-                              title: "Green Color (Data Core)",
-                              badgeText: "+DATA",
-                              description: "Secured database containing system credits. Step on these green nodes to harvest their value (+50 to +300 Credits).",
+                              title: AppStrings.nodeGreenTitle,
+                              badgeText: AppStrings.nodeGreenBadge,
+                              description: AppStrings.nodeGreenDesc,
                               iconWidget: Container(
                                 width: 28,
                                 height: 28,
@@ -115,16 +110,16 @@ class RulesScreen extends StatelessWidget {
                                   color: CyberTheme.successGreen,
                                   boxShadow: CyberTheme.neonGlow(CyberTheme.successGreen, blurRadius: 4),
                                 ),
-                                child: const Center(
-                                  child: Text("+DATA", style: TextStyle(color: Colors.black, fontSize: 7, fontWeight: FontWeight.bold)),
+                                child: Center(
+                                  child: Text(AppStrings.nodeGreenBadge, style: const TextStyle(color: Colors.black, fontSize: 7, fontWeight: FontWeight.bold)),
                                 ),
                               ),
                             ),
                             _buildNodeDirectoryItem(
                               color: CyberTheme.errorRed,
-                              title: "Red Color (Firewall node)",
-                              badgeText: "HAZARD",
-                              description: "Secured corporate firewalls. Stepping on a red node instantly triggers alarm protocols, rising the Firewall Threat level by 25%.",
+                              title: AppStrings.nodeRedTitle,
+                              badgeText: AppStrings.nodeRedBadge,
+                              description: AppStrings.nodeRedDesc,
                               iconWidget: Container(
                                 width: 28,
                                 height: 28,
@@ -139,9 +134,9 @@ class RulesScreen extends StatelessWidget {
                             ),
                             _buildNodeDirectoryItem(
                               color: CyberTheme.secondaryMagenta,
-                              title: "Magenta Color (Extraction Port)",
-                              badgeText: "ESCAPE",
-                              description: "A concentric magenta gateway circle representing the network exit. Stepping here successfully extracts you and saves your credits.",
+                              title: AppStrings.nodeMagentaTitle,
+                              badgeText: AppStrings.nodeMagentaBadge,
+                              description: AppStrings.nodeMagentaDesc,
                               iconWidget: Container(
                                 width: 28,
                                 height: 28,
@@ -156,9 +151,9 @@ class RulesScreen extends StatelessWidget {
                             ),
                             _buildNodeDirectoryItem(
                               color: CyberTheme.accentAmber,
-                              title: "Amber Color (Security Patrol Drone)",
-                              badgeText: "AVOID",
-                              description: "Patrolling node security system. Drones move along dotted amber lines each turn. If they crash into you, your connection is terminated.",
+                              title: AppStrings.nodeAmberTitle,
+                              badgeText: AppStrings.nodeAmberBadge,
+                              description: AppStrings.nodeAmberDesc,
                               iconWidget: Container(
                                 width: 28,
                                 height: 28,
@@ -172,21 +167,15 @@ class RulesScreen extends StatelessWidget {
                             ),
 
                             const SizedBox(height: 24),
-                            _buildSectionHeader("03. Main Settings & Stages Details"),
+                            _buildSectionHeader(AppStrings.rulesHeader03),
                             _buildInfoCard(
-                              title: "Total Game Stages (60 Levels)",
-                              description: "The mainframe contains three classes of stages:\n"
-                                  "• Stages 01 - 10: Handcrafted subnets introducing basic elements and patrol routes.\n"
-                                  "• Stages 11 - 50: Procedural normal networks with varying complexity, bigger layouts, and multiple cores.\n"
-                                  "• Stages 51 - 60: Hardcore mainframe nodes with extremely tight RAM (12-16 MB), high speed firewalls (28% to 32% threat growth rate), and dense firewall node placements.",
+                              title: AppStrings.rulesSection3Card1Title,
+                              description: AppStrings.rulesSection3Card1Desc,
                             ),
                             const SizedBox(height: 12),
                             _buildInfoCard(
-                              title: "Upgrades Terminal",
-                              description: "Redeem your green data core credits to bypass strict security barriers:\n"
-                                  "• RAM Overclock: Adds +2 MB of RAM limits per upgrade level.\n"
-                                  "• Signal Jammer: Slows down firewall threat accumulation by 15% per upgrade level.\n"
-                                  "• Decoy Signature: Deploys decoys so security drones ignore you for 3 moves.",
+                              title: AppStrings.rulesSection3Card2Title,
+                              description: AppStrings.rulesSection3Card2Desc,
                             ),
                             const SizedBox(height: 24),
                           ],
