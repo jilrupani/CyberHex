@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/levels_data.dart';
 import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 import '../utils/game_storage.dart';
 import '../widgets/daily_reward_widget.dart';
 import '../widgets/hacker_status_widget.dart';
@@ -59,20 +60,20 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
             const SizedBox(width: 10),
             Expanded(
               child: Text(
-                "Disconnect System?",
+                AppStrings.disconnectTitle,
                 style: TextStyle(color: themeColor, fontWeight: FontWeight.bold, fontSize: 18),
               ),
             ),
           ],
         ),
-        content: const Text(
-          "Are you sure you want to terminate the hacking session and exit CyberHex?",
-          style: TextStyle(color: Colors.white70, fontSize: 13),
+        content: Text(
+          AppStrings.disconnectDesc,
+          style: const TextStyle(color: Colors.white70, fontSize: 13),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text("CANCEL", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
+            child: Text(AppStrings.cancel, style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context, true),
@@ -80,7 +81,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               backgroundColor: themeColor,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             ),
-            child: const Text("EXIT GAME", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            child: Text(AppStrings.exitGame, style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
           ),
         ],
       ),
@@ -172,7 +173,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                 const Icon(Icons.analytics, color: CyberTheme.successGreen, size: 14),
                                 const SizedBox(width: 6),
                                 Text(
-                                  "$_credits Data",
+                                  "$_credits ${AppStrings.dataCredits}",
                                   style: const TextStyle(
                                     color: CyberTheme.successGreen,
                                     fontWeight: FontWeight.bold,
@@ -203,7 +204,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                     
                     // Levels dashboard list header
                     Text(
-                      "Select Target Node Network:",
+                      AppStrings.selectTargetNetwork,
                       style: CyberTheme.terminalAccent.copyWith(color: activeThemeColor),
                     ),
                     const SizedBox(height: 10),
@@ -297,15 +298,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                           context: context,
                           builder: (context) => AlertDialog(
                             backgroundColor: CyberTheme.cardBackground,
-                            title: const Text("Purge all data?", style: TextStyle(color: CyberTheme.errorRed)),
-                            content: const Text(
-                              "Warning: This will wipe all system credits and unlocked configurations permanently.",
-                              style: TextStyle(color: Colors.white),
+                            title: Text(AppStrings.purgeDataTitle, style: const TextStyle(color: CyberTheme.errorRed)),
+                            content: Text(
+                              AppStrings.purgeDataWarning,
+                              style: const TextStyle(color: Colors.white),
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text("Cancel", style: TextStyle(color: Colors.white)),
+                                child: Text(AppStrings.cancel, style: const TextStyle(color: Colors.white)),
                               ),
                               TextButton(
                                 onPressed: () async {
@@ -315,15 +316,15 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
                                     _loadProgress();
                                   }
                                 },
-                                child: const Text("Purge", style: TextStyle(color: CyberTheme.errorRed)),
+                                child: Text(AppStrings.purgeAction, style: const TextStyle(color: CyberTheme.errorRed)),
                               ),
                             ],
                           ),
                         );
                       },
-                      child: const Text(
-                        "Purge Database Progress",
-                        style: TextStyle(
+                      child: Text(
+                        AppStrings.purgeButton,
+                        style: const TextStyle(
                           color: CyberTheme.errorRed,
                           fontSize: 12,
                         ),

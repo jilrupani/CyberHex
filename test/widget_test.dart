@@ -4,17 +4,19 @@ import 'package:game/main.dart';
 import 'package:game/models/levels_data.dart';
 import 'package:game/screens/game_screen.dart';
 import 'package:game/screens/shop_screen.dart';
+import 'package:game/utils/app_strings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUp(() {
     SharedPreferences.setMockInitialValues({});
+    AppStrings.init();
   });
 
   testWidgets('CyberHex app splash screen launch test', (WidgetTester tester) async {
     await tester.pumpWidget(const CyberHexApp());
-    expect(find.text('CYBERHEX'), findsOneWidget);
-    expect(find.text('SYSTEM INITIALIZING...'), findsOneWidget);
+    expect(find.text(AppStrings.appTitle), findsOneWidget);
+    expect(find.text(AppStrings.systemInitializing), findsOneWidget);
   });
 
   testWidgets('ShopScreen responsive rendering test without overflow', (WidgetTester tester) async {
@@ -30,8 +32,8 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('SYSTEM UPGRADES'), findsOneWidget);
-    expect(find.text('RAM EXPANSION'), findsOneWidget);
+    expect(find.text(AppStrings.systemUpgrades), findsOneWidget);
+    expect(find.text(AppStrings.upgradeName('ram')), findsOneWidget);
   });
 
   testWidgets('Stage 10 GameScreen responsive auto-fit test', (WidgetTester tester) async {

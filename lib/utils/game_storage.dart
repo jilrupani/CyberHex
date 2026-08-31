@@ -8,6 +8,15 @@ class GameStorage {
   static const String _keyUpgradePrefix = 'cyberhex_upgrade_';
   static const String _keyOnboardingCompleted = 'cyberhex_onboarding_completed';
   static const String _keyMusicEnabled = 'cyberhex_music_enabled';
+  static const String _keyLanguage = 'cyberhex_language';
+
+  static String getLanguage() {
+    return _prefs?.getString(_keyLanguage) ?? 'en';
+  }
+
+  static Future<void> setLanguage(String langCode) async {
+    await _prefs?.setString(_keyLanguage, langCode);
+  }
 
   static Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();

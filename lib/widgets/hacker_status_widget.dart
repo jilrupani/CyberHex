@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../theme/cyber_theme.dart';
 import '../models/wallpaper_model.dart';
+import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 
 class HackerStatusWidget extends StatelessWidget {
   final int unlockedLevel;
@@ -16,17 +17,9 @@ class HackerStatusWidget extends StatelessWidget {
     required this.themeColor,
   });
 
-  String _getRankTitle(int level) {
-    if (level >= 8) return "Legendary Netrunner";
-    if (level >= 6) return "Ghost Syndicate Lead";
-    if (level >= 4) return "Cyber Operative";
-    if (level >= 2) return "Node Breaker";
-    return "Script Kiddie";
-  }
-
   @override
   Widget build(BuildContext context) {
-    final rank = _getRankTitle(unlockedLevel);
+    final rank = AppStrings.rankTitle(unlockedLevel);
     final activeThemeName = CyberWallpaper.getById(activeWallpaperId).name;
 
     return Container(
@@ -71,7 +64,7 @@ class HackerStatusWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Clearance Lvl $unlockedLevel",
+                      "${AppStrings.clearanceLevel} $unlockedLevel",
                       style: const TextStyle(
                         fontSize: 10,
                         color: Colors.white70,
@@ -81,7 +74,7 @@ class HackerStatusWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  "Theme: $activeThemeName",
+                  "${AppStrings.themeLabel} $activeThemeName",
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.grey.shade400,

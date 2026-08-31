@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import '../theme/cyber_theme.dart';
-import 'rules_screen.dart';
-import '../utils/game_storage.dart';
+import '../utils/app_strings.dart';
 import '../utils/audio_manager.dart';
+import '../utils/game_storage.dart';
+import 'rules_screen.dart';
+import 'select_language_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,6 +20,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _musicEnabled = GameStorage.getMusicEnabled();
+    AppStrings.languageNotifier.addListener(_onLanguageChanged);
+  }
+
+  @override
+  void dispose() {
+    AppStrings.languageNotifier.removeListener(_onLanguageChanged);
+    super.dispose();
+  }
+
+  void _onLanguageChanged() {
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _toggleMusic(bool value) async {
@@ -31,6 +46,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final activeWallpaperId = GameStorage.getSelectedWallpaper();
     final activeThemeColor = CyberTheme.getWallpaperPrimaryColor(activeWallpaperId);
+    final currentLang = AppStrings.supportedLanguages.firstWhere(
+      (l) => l.code == AppStrings.currentLanguage,
+      orElse: () => AppStrings.supportedLanguages.first,
+    );
 
     return Scaffold(
       backgroundColor: CyberTheme.background,
@@ -63,16 +82,96 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "System Settings",
+                          AppStrings.systemSettings,
                           style: CyberTheme.terminalTitle.copyWith(fontSize: 20, color: activeThemeColor),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
 
-                    // Category 1: Sound Settings
+                    // Category 1: Language Settings
                     Text(
-                      "Audio Configurations",
+                      AppStrings.languageSettings,
+                      style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
+                    ),
+                    const SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: CyberTheme.cardBackground,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: const Color(0xFF1F2438), width: 1.5),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 10,
+                            spreadRadius: 2,
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SelectLanguageScreen(),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 38,
+                                  height: 38,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: const Color(0xFF161B30),
+                                    border: Border.all(color: activeThemeColor.withOpacity(0.5)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      currentLang.flagEmoji,
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        AppStrings.appLanguage,
+                                        style: CyberTheme.terminalBody.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        "${currentLang.nativeName} (${currentLang.englishName})",
+                                        style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Category 2: Sound Settings
+                    Text(
+                      AppStrings.audioConfigurations,
                       style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
                     ),
                     const SizedBox(height: 12),
@@ -81,13 +180,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         color: CyberTheme.cardBackground,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: _musicEnabled ? CyberTheme.primaryCyan.withOpacity(0.4) : const Color(0xFF1F2438),
-                          width: 1.5
+                          color: _musicEnabled ? activeThemeColor.withOpacity(0.4) : const Color(0xFF1F2438),
+                          width: 1.5,
                         ),
                         boxShadow: _musicEnabled
                             ? [
                                 BoxShadow(
-                                  color: CyberTheme.primaryCyan.withOpacity(0.1),
+                                  color: activeThemeColor.withOpacity(0.1),
                                   blurRadius: 10,
                                   spreadRadius: 1,
                                 )
@@ -106,8 +205,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           children: [
                             Icon(
                               _musicEnabled ? Icons.music_note : Icons.music_off,
-                              color: _musicEnabled ? CyberTheme.primaryCyan : const Color(0xFF6B728E),
-                              size: 24
+                              color: _musicEnabled ? activeThemeColor : const Color(0xFF6B728E),
+                              size: 24,
                             ),
                             const SizedBox(width: 16),
                             Expanded(
@@ -115,7 +214,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Background Music",
+                                    AppStrings.backgroundMusic,
                                     style: CyberTheme.terminalBody.copyWith(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14,
@@ -124,7 +223,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
-                                    "Ambient sci-fi cyber sound loops",
+                                    AppStrings.audioSubtitle,
                                     style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
                                   ),
                                 ],
@@ -133,8 +232,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             Switch(
                               value: _musicEnabled,
                               onChanged: _toggleMusic,
-                              activeThumbColor: CyberTheme.primaryCyan,
-                              activeTrackColor: CyberTheme.primaryCyan.withOpacity(0.3),
+                              activeThumbColor: activeThemeColor,
+                              activeTrackColor: activeThemeColor.withOpacity(0.3),
                               inactiveThumbColor: const Color(0xFF6B728E),
                               inactiveTrackColor: const Color(0xFF16192B),
                             ),
@@ -143,11 +242,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 20),
 
-                    // Category 2: Hacking Database
+                    // Category 3: Hacking Database
                     Text(
-                      "Hacking Database & Reference",
+                      AppStrings.hackingDatabaseRef,
                       style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
                     ),
                     const SizedBox(height: 12),
@@ -179,14 +278,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
                             child: Row(
                               children: [
-                                const Icon(Icons.menu_book, color: CyberTheme.primaryCyan, size: 24),
+                                Icon(Icons.menu_book, color: activeThemeColor, size: 24),
                                 const SizedBox(width: 16),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "System Rules & Hacking Guide",
+                                        AppStrings.systemRulesTitle,
                                         style: CyberTheme.terminalBody.copyWith(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
@@ -195,13 +294,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                       ),
                                       const SizedBox(height: 4),
                                       Text(
-                                        "Objective, Node types, colors and stages",
+                                        AppStrings.systemRulesSubtitle,
                                         style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
                                       ),
                                     ],
                                   ),
                                 ),
-                                const Icon(Icons.arrow_forward_ios, color: CyberTheme.primaryCyan, size: 14),
+                                Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
                               ],
                             ),
                           ),

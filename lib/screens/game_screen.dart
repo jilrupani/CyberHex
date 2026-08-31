@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/game_models.dart';
 import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 import '../utils/game_storage.dart';
 import '../widgets/hex_grid_painter.dart';
 import '../widgets/particle_emitter.dart';
@@ -286,7 +287,7 @@ class _GameScreenState extends State<GameScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "RAM Energy: $_currentRam / $_maxRam MB",
+                                "${AppStrings.ramEnergy} $_currentRam / $_maxRam MB",
                                 style: CyberTheme.terminalBody.copyWith(color: CyberTheme.primaryCyan),
                               ),
                               const SizedBox(height: 6),
@@ -314,7 +315,7 @@ class _GameScreenState extends State<GameScreen> {
                         Column(
                           children: [
                             Text(
-                              "Firewall Threat",
+                              AppStrings.firewallThreat,
                               style: CyberTheme.terminalBody.copyWith(color: CyberTheme.errorRed),
                             ),
                             Text(
@@ -432,7 +433,7 @@ class _GameScreenState extends State<GameScreen> {
 
                     // Cyber Terminal Output Log
                     Text(
-                      "Terminal Log Output:",
+                      AppStrings.terminalLogOutput,
                       style: CyberTheme.terminalAccent,
                     ),
                     const SizedBox(height: 6),
@@ -499,7 +500,7 @@ class _GameScreenState extends State<GameScreen> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            _isGameWon ? "Extraction Success" : "Connection Terminated",
+                            _isGameWon ? AppStrings.extractionSuccess : AppStrings.connectionTerminated,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
@@ -509,8 +510,8 @@ class _GameScreenState extends State<GameScreen> {
                           const SizedBox(height: 12),
                           Text(
                             _isGameWon
-                                ? "Mainframe decrypted. Gained +$_collectedCredits system credits data."
-                                : "Firewall detected network node footprint. System isolated.",
+                                ? AppStrings.winDesc(_collectedCredits)
+                                : AppStrings.loseDesc,
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: Colors.white,
@@ -531,9 +532,9 @@ class _GameScreenState extends State<GameScreen> {
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
-                                child: const Text(
-                                  "Menu",
-                                  style: TextStyle(color: Colors.white),
+                                child: Text(
+                                  AppStrings.menu,
+                                  style: const TextStyle(color: Colors.white),
                                 ),
                               ),
                               ElevatedButton(
@@ -549,7 +550,7 @@ class _GameScreenState extends State<GameScreen> {
                                   });
                                 },
                                 child: Text(
-                                  _isGameWon ? "Replay" : "Retry",
+                                  _isGameWon ? AppStrings.replay : AppStrings.retry,
                                   style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
                                 ),
                               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/game_models.dart';
 import '../models/wallpaper_model.dart';
 import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 import '../utils/game_storage.dart';
 
 class ShopScreen extends StatefulWidget {
@@ -32,29 +33,29 @@ class _ShopScreenState extends State<ShopScreen> {
       _upgrades = [
         UpgradeItem(
           id: 'ram',
-          name: 'RAM Expansion',
-          description: 'Increases starting action capacity by +2 RAM per level.',
+          name: AppStrings.upgradeName('ram'),
+          description: AppStrings.upgradeDesc('ram'),
           baseCost: 100,
           level: GameStorage.getUpgradeLevel('ram'),
         ),
         UpgradeItem(
           id: 'jammer',
-          name: 'Firewall Jammer',
-          description: 'Reduces threat level growth per move by 15%.',
+          name: AppStrings.upgradeName('jammer'),
+          description: AppStrings.upgradeDesc('jammer'),
           baseCost: 120,
           level: GameStorage.getUpgradeLevel('jammer'),
         ),
         UpgradeItem(
           id: 'scanner',
-          name: 'Node Radar Scanner',
-          description: 'Increases data detection ranges to locate far-off network packet nodes.',
+          name: AppStrings.upgradeName('scanner'),
+          description: AppStrings.upgradeDesc('scanner'),
           baseCost: 150,
           level: GameStorage.getUpgradeLevel('scanner'),
         ),
         UpgradeItem(
           id: 'decoy',
-          name: 'Signal Decoy',
-          description: 'Deploy decoys. Drones start level in standby mode for 3 moves.',
+          name: AppStrings.upgradeName('decoy'),
+          description: AppStrings.upgradeDesc('decoy'),
           baseCost: 200,
           level: GameStorage.getUpgradeLevel('decoy'),
         ),
@@ -187,7 +188,7 @@ class _ShopScreenState extends State<ShopScreen> {
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: Text(
-                            "Cyber Marketplace",
+                            AppStrings.cyberMarketplace,
                             style: CyberTheme.terminalTitle.copyWith(color: activeThemeColor),
                           ),
                         ),
@@ -201,7 +202,7 @@ class _ShopScreenState extends State<ShopScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        "$_credits Data",
+                        "$_credits ${AppStrings.dataCredits}",
                         style: const TextStyle(
                           color: CyberTheme.successGreen,
                           fontWeight: FontWeight.bold,
@@ -237,7 +238,7 @@ class _ShopScreenState extends State<ShopScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                "System Upgrades",
+                                AppStrings.systemUpgrades,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -261,7 +262,7 @@ class _ShopScreenState extends State<ShopScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                "Wallpapers & Themes",
+                                AppStrings.wallpapersThemes,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 12,
@@ -380,7 +381,7 @@ class _ShopScreenState extends State<ShopScreen> {
                       ),
                     ),
                     child: Text(
-                      isMax ? "Maxed" : "$cost Data",
+                      isMax ? AppStrings.maxed : "$cost ${AppStrings.dataCredits}",
                       style: TextStyle(
                         color: canBuy ? Colors.black : Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -492,8 +493,8 @@ class _ShopScreenState extends State<ShopScreen> {
                 ),
                 child: Text(
                   isEquipped
-                      ? "EQUIPPED"
-                      : (isUnlocked ? "EQUIP" : "${wp.cost} Data"),
+                      ? AppStrings.equipped
+                      : (isUnlocked ? AppStrings.equip : "${wp.cost} ${AppStrings.dataCredits}"),
                   style: TextStyle(
                     color: isEquipped
                         ? wp.primaryColor

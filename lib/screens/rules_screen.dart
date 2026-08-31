@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 
 class RulesScreen extends StatelessWidget {
   const RulesScreen({super.key});
@@ -47,7 +48,7 @@ class RulesScreen extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          "Hacking Protocols",
+                          AppStrings.hackingProtocols,
                           style: CyberTheme.terminalTitle.copyWith(fontSize: 18),
                         ),
                       ],

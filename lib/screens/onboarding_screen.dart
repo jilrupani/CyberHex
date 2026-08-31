@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 import '../utils/game_storage.dart';
 import 'main_menu_screen.dart';
 
@@ -114,9 +115,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                         if (_currentPage < 3)
                           TextButton(
                             onPressed: _finishOnboarding,
-                            child: const Text(
-                              "Skip",
-                              style: TextStyle(
+                            child: Text(
+                              AppStrings.skip,
+                              style: const TextStyle(
                                 color: CyberTheme.secondaryMagenta,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -139,27 +140,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                       },
                       children: [
                         _buildSlide(
-                          title: "Welcome Hacker",
-                          subtitle: "The Mission Overview",
-                          description: "You are an elite Node Hacker operating in the deep shadows. Your goal is to infiltrate high-security corporate node networks, breach their firewalls, and extract critical core intelligence.",
+                          title: AppStrings.obSlide1Title,
+                          subtitle: AppStrings.obSlide1Subtitle,
+                          description: AppStrings.obSlide1Desc,
                           child: _buildWelcomeGraphic(),
                         ),
                         _buildSlide(
-                          title: "Traverse Nodes",
-                          subtitle: "RAM Resource Management",
-                          description: "In CyberHex, you move by linking to adjacent nodes. Each hop consumes 1 MB of your RAM Energy. Plan your route carefully: if your RAM cache decays to zero, your connection drops and you fail.",
+                          title: AppStrings.obSlide2Title,
+                          subtitle: AppStrings.obSlide2Subtitle,
+                          description: AppStrings.obSlide2Desc,
                           child: _buildTraversalGraphic(),
                         ),
                         _buildSlide(
-                          title: "Avoid Threats",
-                          subtitle: "Security Detection & Escape",
-                          description: "Beware! Stepping on Firewall nodes triggers immediate alarms (+25% threat speed). Watch out for security Drones patrolling the paths (marked with dotted amber lines). Seek and enter the green Extraction Gate to escape and secure your loot.",
+                          title: AppStrings.obSlide3Title,
+                          subtitle: AppStrings.obSlide3Subtitle,
+                          description: AppStrings.obSlide3Desc,
                           child: _buildThreatsGraphic(),
                         ),
                         _buildSlide(
-                          title: "Upgrade Arsenal",
-                          subtitle: "Mainframe Upgrades",
-                          description: "Redeem extracted DATA credits at the Terminal Shop to upgrade your rig. Expand your max RAM, install Jammers to slow down firewall tracing, or buy Decoys to hide from security patrol drone paths.",
+                          title: AppStrings.obSlide4Title,
+                          subtitle: AppStrings.obSlide4Subtitle,
+                          description: AppStrings.obSlide4Desc,
                           child: _buildShopGraphic(),
                         ),
                       ],
@@ -198,7 +199,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> with TickerProvider
                             ),
                             child: Center(
                               child: Text(
-                                _currentPage == 3 ? "Enter Neural Link" : "Proceed Protocol",
+                                _currentPage == 3 ? AppStrings.enterNeuralLink : AppStrings.proceedProtocol,
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,

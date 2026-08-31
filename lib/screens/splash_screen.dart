@@ -6,6 +6,7 @@ import '../widgets/particle_emitter.dart';
 import 'main_menu_screen.dart';
 import 'onboarding_screen.dart';
 import '../utils/game_storage.dart';
+import '../utils/app_strings.dart';
 import '../utils/audio_manager.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -198,9 +199,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                     const SizedBox(height: 32),
 
                     // App Title
-                    const Text(
-                      "CyberHex",
-                      style: TextStyle(
+                    Text(
+                      AppStrings.appTitle,
+                      style: const TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -211,9 +212,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
-                      "System Initializing...",
-                      style: TextStyle(
+                    Text(
+                      AppStrings.systemInitializing,
+                      style: const TextStyle(
                         fontSize: 12,
                         color: CyberTheme.secondaryMagenta,
                         letterSpacing: 2.0,

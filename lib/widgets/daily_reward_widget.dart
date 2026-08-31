@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../theme/cyber_theme.dart';
+import '../utils/app_strings.dart';
 import '../utils/game_storage.dart';
 
 class DailyRewardWidget extends StatefulWidget {
@@ -66,14 +67,16 @@ class _DailyRewardWidgetState extends State<DailyRewardWidget> {
     
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Row(
             children: [
-              Icon(Icons.card_giftcard, color: CyberTheme.successGreen),
-              SizedBox(width: 12),
-              Text(
-                "Daily Reward Claimed: +50 Data Credits!",
-                style: TextStyle(color: CyberTheme.successGreen, fontWeight: FontWeight.bold),
+              const Icon(Icons.card_giftcard, color: CyberTheme.successGreen),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  AppStrings.dailyRewardClaimed,
+                  style: const TextStyle(color: CyberTheme.successGreen, fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -123,7 +126,7 @@ class _DailyRewardWidgetState extends State<DailyRewardWidget> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "Daily Data Bonus",
+                  AppStrings.dailyRewardTitle,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 13,
@@ -133,8 +136,8 @@ class _DailyRewardWidgetState extends State<DailyRewardWidget> {
                 const SizedBox(height: 2),
                 Text(
                   _isAvailable
-                      ? "Claim +50 Data Credits reward now!"
-                      : "Next Bonus in: $_timeRemaining",
+                      ? AppStrings.dailyRewardAvailable
+                      : "${AppStrings.nextBonusIn} $_timeRemaining",
                   style: TextStyle(
                     fontSize: 11,
                     color: _isAvailable ? CyberTheme.successGreen : Colors.grey.shade500,
@@ -155,7 +158,7 @@ class _DailyRewardWidgetState extends State<DailyRewardWidget> {
               ),
             ),
             child: Text(
-              _isAvailable ? "CLAIM" : "LOCKED",
+              _isAvailable ? AppStrings.claim : AppStrings.locked,
               style: TextStyle(
                 color: _isAvailable ? Colors.black : Colors.grey.shade600,
                 fontWeight: FontWeight.bold,
