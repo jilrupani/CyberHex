@@ -3,6 +3,9 @@ import '../theme/cyber_theme.dart';
 import '../utils/app_strings.dart';
 import '../utils/audio_manager.dart';
 import '../utils/game_storage.dart';
+import '../widgets/rate_us_dialog.dart';
+import 'feedback_screen.dart';
+import 'privacy_policy_screen.dart';
 import 'rules_screen.dart';
 import 'select_language_screen.dart';
 
@@ -68,13 +71,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
 
             SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Header
-                    Row(
+              child: Column(
+                children: [
+                  // Top Header Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                    child: Row(
                       children: [
                         IconButton(
                           icon: Icon(Icons.arrow_back, color: activeThemeColor),
@@ -87,228 +89,318 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 24),
+                  ),
 
-                    // Category 1: Language
-                    Text(
-                      AppStrings.language,
-                      style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: CyberTheme.cardBackground,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFF1F2438), width: 1.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            spreadRadius: 2,
+                  // Scrollable Settings Sections
+                  Expanded(
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Category 1: Language
+                          Text(
+                            AppStrings.language,
+                            style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const SelectLanguageScreen(),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: 38,
-                                  height: 38,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: const Color(0xFF161B30),
-                                    border: Border.all(color: activeThemeColor.withOpacity(0.5)),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      currentLang.flagEmoji,
-                                      style: const TextStyle(fontSize: 18),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        AppStrings.appLanguage,
-                                        style: CyberTheme.terminalBody.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        "${currentLang.nativeName} (${currentLang.englishName})",
-                                        style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Category 2: Sound Settings
-                    Text(
-                      AppStrings.audioConfigurations,
-                      style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: CyberTheme.cardBackground,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: _musicEnabled ? activeThemeColor.withOpacity(0.4) : const Color(0xFF1F2438),
-                          width: 1.5,
-                        ),
-                        boxShadow: _musicEnabled
-                            ? [
-                                BoxShadow(
-                                  color: activeThemeColor.withOpacity(0.1),
-                                  blurRadius: 10,
-                                  spreadRadius: 1,
-                                )
-                              ]
-                            : [
+                          const SizedBox(height: 12),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: CyberTheme.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFF1F2438), width: 1.5),
+                              boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.2),
                                   blurRadius: 10,
                                   spreadRadius: 2,
-                                )
+                                ),
                               ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-                        child: Row(
-                          children: [
-                            Icon(
-                              _musicEnabled ? Icons.music_note : Icons.music_off,
-                              color: _musicEnabled ? activeThemeColor : const Color(0xFF6B728E),
-                              size: 24,
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const SelectLanguageScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 38,
+                                        height: 38,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: const Color(0xFF161B30),
+                                          border: Border.all(color: activeThemeColor.withOpacity(0.5)),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            currentLang.flagEmoji,
+                                            style: const TextStyle(fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              AppStrings.appLanguage,
+                                              style: CyberTheme.terminalBody.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              "${currentLang.nativeName} (${currentLang.englishName})",
+                                              style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20),
+
+                          // Category 2: Sound Settings
+                          Text(
+                            AppStrings.audioConfigurations,
+                            style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
+                          ),
+                          const SizedBox(height: 12),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: CyberTheme.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(
+                                color: _musicEnabled ? activeThemeColor.withOpacity(0.4) : const Color(0xFF1F2438),
+                                width: 1.5,
+                              ),
+                              boxShadow: _musicEnabled
+                                  ? [
+                                      BoxShadow(
+                                        color: activeThemeColor.withOpacity(0.1),
+                                        blurRadius: 10,
+                                        spreadRadius: 1,
+                                      )
+                                    ]
+                                  : [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 10,
+                                        spreadRadius: 2,
+                                      )
+                                    ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+                              child: Row(
                                 children: [
-                                  Text(
-                                    AppStrings.backgroundMusic,
-                                    style: CyberTheme.terminalBody.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.white,
+                                  Icon(
+                                    _musicEnabled ? Icons.music_note : Icons.music_off,
+                                    color: _musicEnabled ? activeThemeColor : const Color(0xFF6B728E),
+                                    size: 24,
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppStrings.backgroundMusic,
+                                          style: CyberTheme.terminalBody.copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          AppStrings.audioSubtitle,
+                                          style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    AppStrings.audioSubtitle,
-                                    style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
+                                  Switch(
+                                    value: _musicEnabled,
+                                    onChanged: _toggleMusic,
+                                    activeThumbColor: activeThemeColor,
+                                    activeTrackColor: activeThemeColor.withOpacity(0.3),
+                                    inactiveThumbColor: const Color(0xFF6B728E),
+                                    inactiveTrackColor: const Color(0xFF16192B),
                                   ),
                                 ],
                               ),
                             ),
-                            Switch(
-                              value: _musicEnabled,
-                              onChanged: _toggleMusic,
-                              activeThumbColor: activeThemeColor,
-                              activeTrackColor: activeThemeColor.withOpacity(0.3),
-                              inactiveThumbColor: const Color(0xFF6B728E),
-                              inactiveTrackColor: const Color(0xFF16192B),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 20),
-
-                    // Category 3: Hacking Database
-                    Text(
-                      AppStrings.hackingDatabaseRef,
-                      style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: CyberTheme.cardBackground,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFF1F2438), width: 1.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
-                            blurRadius: 10,
-                            spreadRadius: 2,
                           ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RulesScreen(),
-                              ),
-                            );
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-                            child: Row(
-                              children: [
-                                Icon(Icons.menu_book, color: activeThemeColor, size: 24),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+
+                          const SizedBox(height: 20),
+
+                          // Category 3: Hacking Database
+                          Text(
+                            AppStrings.hackingDatabaseRef,
+                            style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
+                          ),
+                          const SizedBox(height: 12),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: CyberTheme.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFF1F2438), width: 1.5),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const RulesScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        AppStrings.systemRulesTitle,
-                                        style: CyberTheme.terminalBody.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                          color: Colors.white,
+                                      Icon(Icons.menu_book, color: activeThemeColor, size: 24),
+                                      const SizedBox(width: 16),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              AppStrings.systemRulesTitle,
+                                              style: CyberTheme.terminalBody.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              AppStrings.systemRulesSubtitle,
+                                              style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        AppStrings.systemRulesSubtitle,
-                                        style: CyberTheme.terminalMuted.copyWith(fontSize: 11),
-                                      ),
+                                      Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
                                     ],
                                   ),
                                 ),
-                                Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+
+                          const SizedBox(height: 20),
+
+                          // Category 4: General (Privacy Policy, Feedback, Rate Us)
+                          Text(
+                            AppStrings.generalSection,
+                            style: CyberTheme.terminalAccent.copyWith(fontSize: 12),
+                          ),
+                          const SizedBox(height: 12),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: CyberTheme.cardBackground,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: const Color(0xFF1F2438), width: 1.5),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  spreadRadius: 2,
+                                ),
+                              ],
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Column(
+                                children: [
+                                  // 1. Feedback
+                                  ListTile(
+                                    leading: Icon(Icons.feedback_outlined, color: activeThemeColor),
+                                    title: Text(
+                                      AppStrings.feedback,
+                                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                    ),
+                                    trailing: Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const FeedbackScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  Divider(color: Colors.grey.shade900, height: 1),
+                                  // 2. Rate Us
+                                  ListTile(
+                                    leading: Icon(Icons.star_outline_rounded, color: activeThemeColor),
+                                    title: Text(
+                                      AppStrings.rateUs,
+                                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                    ),
+                                    trailing: Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
+                                    onTap: () {
+                                      RateUsDialog.show(context, activeThemeColor);
+                                    },
+                                  ),
+                                  Divider(color: Colors.grey.shade900, height: 1),
+                                  // 3. Privacy Policy
+                                  ListTile(
+                                    leading: Icon(Icons.privacy_tip_outlined, color: activeThemeColor),
+                                    title: Text(
+                                      AppStrings.privacyPolicy,
+                                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+                                    ),
+                                    trailing: Icon(Icons.arrow_forward_ios, color: activeThemeColor, size: 14),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => const PrivacyPolicyScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ],

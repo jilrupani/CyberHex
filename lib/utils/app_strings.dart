@@ -1547,4 +1547,226 @@ class AppStrings {
     'ko': '방화벽이 위치를 감지했습니다. 시스템이 격리되었습니다.',
     'hi': 'फ़ायरवॉल ने आपकी उपस्थिति का पता लगाया। सिस्टम अलग कर दिया गया।',
   });
+
+  // --- General, Privacy Policy, Feedback & Rate Us ---
+  static String get generalSection => _get({
+    'en': 'General',
+    'id': 'Umum',
+    'es': 'General',
+    'vi': 'Chung',
+    'th': 'ทั่วไป',
+    'pt': 'Geral',
+    'ru': 'Общие',
+    'fr': 'Général',
+    'ko': '일반',
+    'hi': 'सामान्य',
+  });
+
+  static String get privacyPolicy => _get({
+    'en': 'Privacy Policy',
+    'id': 'Kebijakan Privasi',
+    'es': 'Política de Privacidad',
+    'vi': 'Chính Sách Bảo Mật',
+    'th': 'นโยบายความเป็นส่วนตัว',
+    'pt': 'Política de Privacidade',
+    'ru': 'Политика конфиденциальности',
+    'fr': 'Politique de Confidentialité',
+    'ko': '개인정보 처리방침',
+    'hi': 'गोपनीयता नीति',
+  });
+
+  static String get feedback => _get({
+    'en': 'Feedback',
+    'id': 'Umpan Balik',
+    'es': 'Comentarios',
+    'vi': 'Phản Hồi',
+    'th': 'ข้อเสนอแนะ',
+    'pt': 'Feedback',
+    'ru': 'Обратная связь',
+    'fr': 'Commentaires',
+    'ko': '피드백',
+    'hi': 'प्रतिक्रिया',
+  });
+
+  static String get rateUs => _get({
+    'en': 'Rate Us',
+    'id': 'Beri Nilai Kami',
+    'es': 'Valóranos',
+    'vi': 'Đánh Giá Chúng Tôi',
+    'th': 'ให้คะแนนเรา',
+    'pt': 'Avalie-nos',
+    'ru': 'Оценить нас',
+    'fr': 'Évaluez-nous',
+    'ko': '평가하기',
+    'hi': 'हमें रेट करें',
+  });
+
+  static String get feedbackCategoryLabel => _get({
+    'en': 'Feedback Type',
+    'id': 'Tipe Umpan Balik',
+    'es': 'Tipo de Comentario',
+    'vi': 'Loại Phản Hồi',
+    'th': 'ประเภทข้อเสนอแนะ',
+    'pt': 'Tipo de Feedback',
+    'ru': 'Тип отзыва',
+    'fr': 'Type de Commentaire',
+    'ko': '피드백 유형',
+    'hi': 'प्रतिक्रिया प्रकार',
+  });
+
+  static String get fbOptNotWorking => _get({
+    'en': 'App Not Working',
+    'id': 'Aplikasi Tidak Bekerja',
+    'es': 'La App No Funciona',
+    'vi': 'Ứng Dụng Không Hoạt Động',
+    'th': 'แอปไม่ทำงาน',
+    'pt': 'Aplicativo Não Funciona',
+    'ru': 'Приложение не работает',
+    'fr': 'L\'application Ne Fonctionne Pas',
+    'ko': '앱이 작동하지 않음',
+    'hi': 'ऐप काम नहीं कर रहा है',
+  });
+
+  static String get fbOptLag => _get({
+    'en': 'Game Lag / Freeze',
+    'id': 'Game Lag / Macet',
+    'es': 'Juego Lag / Congelado',
+    'vi': 'Game Giật / Lag',
+    'th': 'เกมแล็ก / ค้าง',
+    'pt': 'Jogo Com Lag / Travando',
+    'ru': 'Игра лагает / зависает',
+    'fr': 'Jeu Rame / Bloqué',
+    'ko': '게임 렉 / 멈춤',
+    'hi': 'गेम लैग / फ़्रीज़',
+  });
+
+  static String get fbOptControls => _get({
+    'en': 'Controls Not Working',
+    'id': 'Kontrol Tidak Bekerja',
+    'es': 'Controles No Funcionan',
+    'vi': 'Điều Khiển Không Hoạt Động',
+    'th': 'ปุ่มควบคุมไม่ทำงาน',
+    'pt': 'Controles Não Funcionam',
+    'ru': 'Управление не работает',
+    'fr': 'Les Commandes Ne Fonctionnent Pas',
+    'ko': '조작이 되지 않음',
+    'hi': 'नियंत्रण काम नहीं कर रहे',
+  });
+
+  static String get fbOptAudio => _get({
+    'en': 'Audio / Sound Issue',
+    'id': 'Masalah Audio / Suara',
+    'es': 'Problema de Audio / Sonido',
+    'vi': 'Lỗi Âm Thanh',
+    'th': 'ปัญหาเสียง',
+    'pt': 'Problema de Áudio / Som',
+    'ru': 'Проблема со звуком',
+    'fr': 'Problème Audio / Son',
+    'ko': '오디오 / 사운드 문제',
+    'hi': 'ऑडियो / ध्वनि समस्या',
+  });
+
+  static String get fbOptLevel => _get({
+    'en': 'Level / Stage Issue',
+    'id': 'Masalah Level / Tahap',
+    'es': 'Problema de Nivel / Etapa',
+    'vi': 'Lỗi Cấp Độ / Giai Đoạn',
+    'th': 'ปัญหาด่าน / ขั้นตอน',
+    'pt': 'Problema de Nível / Etapa',
+    'ru': 'Проблема с уровнем / этапом',
+    'fr': 'Problème de Niveau / Étape',
+    'ko': '레벨 / 스테이지 문제',
+    'hi': 'स्तर / चरण समस्या',
+  });
+
+  static String get fbOptOther => _get({
+    'en': 'Other App Issue',
+    'id': 'Masalah Aplikasi Lainnya',
+    'es': 'Otro Problema de la App',
+    'vi': 'Vấn Đề Khác',
+    'th': 'ปัญหาอื่นๆ ของแอป',
+    'pt': 'Outro Problema do App',
+    'ru': 'Другая проблема',
+    'fr': 'Autre Problème',
+    'ko': '기타 앱 문제',
+    'hi': 'अन्य ऐप समस्या',
+  });
+
+  static String get feedbackMessageHint => _get({
+    'en': 'Describe your feedback or suggestion...',
+    'id': 'Jelaskan umpan balik Anda...',
+    'es': 'Describe tu sugerencia...',
+    'vi': 'Mô tả phản hồi của bạn...',
+    'th': 'อธิบายข้อเสนอแนะของคุณ...',
+    'pt': 'Descreva seu feedback...',
+    'ru': 'Опишите ваш отзыв...',
+    'fr': 'Décrivez votre commentaire...',
+    'ko': '피드백을 작성해주세요...',
+    'hi': 'अपनी प्रतिक्रिया का वर्णन करें...',
+  });
+
+  static String get feedbackEmailHint => _get({
+    'en': 'Your Email (Optional)',
+    'id': 'Email Anda (Opsional)',
+    'es': 'Tu Correo (Opcional)',
+    'vi': 'Email Của Bạn (Tùy chọn)',
+    'th': 'อีเมลของคุณ (ไม่บังคับ)',
+    'pt': 'Seu E-mail (Opcional)',
+    'ru': 'Ваш Email (необязательно)',
+    'fr': 'Votre Email (Optionnel)',
+    'ko': '이메일 (선택사항)',
+    'hi': 'आपका ईमेल (वैकल्पिक)',
+  });
+
+  static String get submitFeedback => _get({
+    'en': 'Submit Feedback',
+    'id': 'Kirim Umpan Balik',
+    'es': 'Enviar Comentarios',
+    'vi': 'Gửi Phản Hồi',
+    'th': 'ส่งข้อเสนอแนะ',
+    'pt': 'Enviar Feedback',
+    'ru': 'Отправить отзыв',
+    'fr': 'Envoyer le Commentaire',
+    'ko': '피드백 제출',
+    'hi': 'प्रतिक्रिया जमा करें',
+  });
+
+  static String get feedbackSuccessToast => _get({
+    'en': 'Feedback transmitted to mainframe server!',
+    'id': 'Umpan balik berhasil dikirim!',
+    'es': '¡Comentario transmitido con éxito!',
+    'vi': 'Đã gửi phản hồi thành công!',
+    'th': 'ส่งข้อเสนอแนะสำเร็จแล้ว!',
+    'pt': 'Feedback enviado com sucesso!',
+    'ru': 'Отзыв успешно отправлен!',
+    'fr': 'Commentaire transmis avec succès !',
+    'ko': '피드백이 성공적으로 전송되었습니다!',
+    'hi': 'प्रतिक्रिया सफलतापूर्वक भेजी गई!',
+  });
+
+  static String get rateTitle => _get({
+    'en': 'Rate CyberHex',
+    'id': 'Beri Nilai CyberHex',
+    'es': 'Calificar CyberHex',
+    'vi': 'Đánh Giá CyberHex',
+    'th': 'ให้คะแนน CyberHex',
+    'pt': 'Avaliar CyberHex',
+    'ru': 'Оценить CyberHex',
+    'fr': 'Évaluer CyberHex',
+    'ko': 'CyberHex 평가',
+    'hi': 'CyberHex को रेट करें',
+  });
+
+  static String get rateDesc => _get({
+    'en': 'How would you rate your node hacking experience?',
+    'id': 'Bagaimana pengalaman peretasan Anda?',
+    'es': '¿Cómo calificarías tu experiencia?',
+    'vi': 'Bạn đánh giá trải nghiệm hack thế nào?',
+    'th': 'คุณให้คะแนนประสบการณ์แฮกอย่างไร?',
+    'pt': 'Como você avalia sua experiência?',
+    'ru': 'Как вы оцените игру?',
+    'fr': 'Comment évaluez-vous votre expérience ?',
+    'ko': '게임 경험은 어떠셨나요?',
+    'hi': 'आप अपने अनुभव को कैसे रेट करेंगे?',
+  });
 }
