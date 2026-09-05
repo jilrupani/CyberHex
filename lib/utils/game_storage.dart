@@ -114,6 +114,16 @@ class GameStorage {
     return now.difference(lastDate).inHours >= 24;
   }
 
+  static const String _keyStageTutorialPrefix = 'cyberhex_stage_tutorial_';
+
+  static bool isStageTutorialCompleted(int stageId) {
+    return _prefs?.getBool('$_keyStageTutorialPrefix$stageId') ?? false;
+  }
+
+  static Future<void> setStageTutorialCompleted(int stageId, bool completed) async {
+    await _prefs?.setBool('$_keyStageTutorialPrefix$stageId', completed);
+  }
+
   static Future<void> resetProgress() async {
     await _prefs?.setInt(_keyCredits, 0);
     await _prefs?.setInt(_keyUnlockedLevel, 1);
@@ -121,10 +131,10 @@ class GameStorage {
     await _prefs?.setStringList(_keyUnlockedWallpapers, ['matrix_cyan']);
     await _prefs?.setInt(_keyLastDailyReward, 0);
     
-    // Clear all upgrade keys
+    // Clear all upgrade & tutorial keys
     final keys = _prefs?.getKeys() ?? {};
     for (var key in keys) {
-      if (key.startsWith(_keyUpgradePrefix)) {
+      if (key.startsWith(_keyUpgradePrefix) || key.startsWith(_keyStageTutorialPrefix)) {
         await _prefs?.remove(key);
       }
     }

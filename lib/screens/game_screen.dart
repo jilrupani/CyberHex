@@ -1,11 +1,13 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import '../models/game_models.dart';
+import '../models/tutorial_step_model.dart';
 import '../theme/cyber_theme.dart';
 import '../utils/app_strings.dart';
 import '../utils/game_storage.dart';
 import '../widgets/hex_grid_painter.dart';
 import '../widgets/particle_emitter.dart';
+import '../widgets/stage_tutorial_overlay.dart';
 
 class GameScreen extends StatefulWidget {
   final LevelModel level;
@@ -37,6 +39,20 @@ class _GameScreenState extends State<GameScreen> {
   // Upgrade bonuses
   double _jammerMultiplier = 1.0;
   int _decoyMovesLeft = 0;
+
+  // Tutorial State
+  bool _showTutorial = false;
+  int _currentTutorialStep = 0;
+  List<TutorialStep> _tutorialSteps = [];
+  Offset? _tutorialTargetOffset;
+
+  final GlobalKey _ramKey = GlobalKey();
+  final GlobalKey _firewallKey = GlobalKey();
+  final GlobalKey _terminalKey = GlobalKey();
+  final GlobalKey _gridKey = GlobalKey();
+
+  double _gridRadius = 0;
+  Offset _gridCenterOffset = Offset.zero;
 
   String _formatCodeName(String name) {
     return name.split('_').where((word) {
@@ -91,6 +107,160 @@ class _GameScreenState extends State<GameScreen> {
     if (_decoyMovesLeft > 0) {
       _addLog("Decoy online. Drone standby ready.");
     }
+
+    _checkAndStartTutorial();
+  }
+
+  void _checkAndStartTutorial() {
+    if (widget.level.id > 3) return;
+    if (GameStorage.isStageTutorialCompleted(widget.level.id)) return;
+
+    _currentTutorialStep = 0;
+    if (widget.level.id == 1) {
+      _tutorialSteps = const [
+        TutorialStep(
+          targetType: TutorialTargetType.startNode,
+          targetCoords: HexCoords(0, 0),
+          title: "1. Neural Origin Node",
+          description: "This is your starting neural node where connection originates.",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.adjacentNode,
+          targetCoords: HexCoords(1, 0),
+          title: "2. Path Link & Movement",
+          description: "Tap adjacent highlighted nodes to move forward. Each link move consumes 1 MB of RAM.",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.ramGauge,
+          title: "3. RAM Capacity Monitor",
+          description: "Keep track of your remaining RAM. Reach the Exit Port before RAM reaches 0 MB!",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.coreNode,
+          targetCoords: HexCoords(1, -1),
+          title: "4. Data Core Harvest",
+          description: "Hack Data Cores to harvest extra system credits for upgrades in the Shop.",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.portNode,
+          targetCoords: HexCoords(2, 0),
+          title: "5. Target Exit Port",
+          description: "Reach this extraction port to complete Stage 1 and unlock the next level!",
+        ),
+      ];
+    } else if (widget.level.id == 2) {
+      _tutorialSteps = const [
+        TutorialStep(
+          targetType: TutorialTargetType.firewallNode,
+          targetCoords: HexCoords(0, 1),
+          title: "1. Active Firewall Danger",
+          description: "Warning! Stepping onto a Firewall node triggers alarms, increasing Threat by +25%.",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.firewallGauge,
+          title: "2. Threat Level Monitor",
+          description: "If the Firewall Threat reaches 100%, security protocols terminate your session.",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.portNode,
+          targetCoords: HexCoords(2, 1),
+          title: "3. Bypass & Extraction",
+          description: "Bypass active firewalls and safely extract through the target port!",
+        ),
+      ];
+    } else if (widget.level.id == 3) {
+      _tutorialSteps = const [
+        TutorialStep(
+          targetType: TutorialTargetType.droneNode,
+          targetCoords: HexCoords(0, 0),
+          title: "1. Autonomous Drone Patrol",
+          description: "Alert! Security drones patrol grid nodes. Avoid stepping onto nodes occupied by drones!",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.terminalLog,
+          title: "2. Cyber Terminal Feed",
+          description: "Monitor live terminal feed at the bottom for instant security logs and threat alerts.",
+        ),
+        TutorialStep(
+          targetType: TutorialTargetType.portNode,
+          targetCoords: HexCoords(2, -1),
+          title: "3. Evade & Extract",
+          description: "Harvest Data Cores while evading drone patrols to safely reach the Exit Port!",
+        ),
+      ];
+    }
+
+    if (_tutorialSteps.isNotEmpty) {
+      _showTutorial = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _updateTutorialTargetOffset();
+      });
+    }
+  }
+
+  void _updateTutorialTargetOffset() {
+    if (!_showTutorial || _tutorialSteps.isEmpty || _currentTutorialStep >= _tutorialSteps.length) {
+      return;
+    }
+
+    final step = _tutorialSteps[_currentTutorialStep];
+    Offset calculatedOffset = Offset.zero;
+
+    if (step.targetCoords != null) {
+      final gridBox = _gridKey.currentContext?.findRenderObject() as RenderBox?;
+      if (gridBox != null && _gridRadius > 0) {
+        final gridPos = gridBox.localToGlobal(Offset.zero);
+        final q = step.targetCoords!.q;
+        final r = step.targetCoords!.r;
+        final localX = _gridRadius * (sqrt(3) * q + (sqrt(3) / 2) * r) + _gridCenterOffset.dx;
+        final localY = _gridRadius * (1.5 * r) + _gridCenterOffset.dy;
+        calculatedOffset = gridPos + Offset(localX, localY);
+      }
+    } else if (step.targetType == TutorialTargetType.ramGauge) {
+      final box = _ramKey.currentContext?.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final pos = box.localToGlobal(Offset.zero);
+        calculatedOffset = pos + Offset(box.size.width / 2, box.size.height / 2);
+      }
+    } else if (step.targetType == TutorialTargetType.firewallGauge) {
+      final box = _firewallKey.currentContext?.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final pos = box.localToGlobal(Offset.zero);
+        calculatedOffset = pos + Offset(box.size.width / 2, box.size.height / 2);
+      }
+    } else if (step.targetType == TutorialTargetType.terminalLog) {
+      final box = _terminalKey.currentContext?.findRenderObject() as RenderBox?;
+      if (box != null) {
+        final pos = box.localToGlobal(Offset.zero);
+        calculatedOffset = pos + Offset(box.size.width / 2, box.size.height / 2);
+      }
+    }
+
+    if (mounted) {
+      setState(() {
+        _tutorialTargetOffset = calculatedOffset;
+      });
+    }
+  }
+
+  void _onTutorialStepChanged(int newStep) {
+    if (newStep < _tutorialSteps.length) {
+      setState(() {
+        _currentTutorialStep = newStep;
+      });
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _updateTutorialTargetOffset();
+      });
+    } else {
+      _dismissTutorial();
+    }
+  }
+
+  void _dismissTutorial() {
+    setState(() {
+      _showTutorial = false;
+    });
+    GameStorage.setStageTutorialCompleted(widget.level.id, true);
   }
 
   void _addLog(String msg) {
@@ -284,6 +454,7 @@ class _GameScreenState extends State<GameScreen> {
                         // RAM indicator
                         Expanded(
                           child: Column(
+                            key: _ramKey,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
@@ -313,6 +484,7 @@ class _GameScreenState extends State<GameScreen> {
                         const SizedBox(width: 24),
                         // Firewall Alert
                         Column(
+                          key: _firewallKey,
                           children: [
                             Text(
                               AppStrings.firewallThreat,
@@ -376,7 +548,16 @@ class _GameScreenState extends State<GameScreen> {
                             height / 2 - centerYUnit * radius,
                           );
 
+                          _gridRadius = radius;
+                          _gridCenterOffset = centerOffset;
+                          if (_showTutorial && _tutorialTargetOffset == null) {
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              _updateTutorialTargetOffset();
+                            });
+                          }
+
                           return GestureDetector(
+                            key: _gridKey,
                             onTapUp: (details) {
                               final localPos = details.localPosition;
                               
@@ -440,6 +621,7 @@ class _GameScreenState extends State<GameScreen> {
                     Expanded(
                       flex: 2,
                       child: Container(
+                        key: _terminalKey,
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
                           color: Colors.black.withOpacity(0.85),
@@ -561,6 +743,16 @@ class _GameScreenState extends State<GameScreen> {
                     ),
                   ),
                 ),
+              ),
+          
+            // Guided Auto-Demonstration Overlay for Stages 1-3
+            if (_showTutorial)
+              StageTutorialOverlay(
+                steps: _tutorialSteps,
+                targetOffset: _tutorialTargetOffset,
+                currentStepIndex: _currentTutorialStep,
+                onStepChanged: _onTutorialStepChanged,
+                onDismiss: _dismissTutorial,
               ),
           ],
         ),
